@@ -27,7 +27,7 @@ function inscriptionCamp($id_cpt)
         $nomStagiaire = $_POST['nom_stagiaire'];
         $PrenStagiaire = $_POST['Prenom_stagiaire'];
         $adresseStagiaire = $_POST['adresse_stagiaire'];
-        $taillesSselectioner = $_POST['tailles_selectioner'];
+        $taillesSelectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
         $campSelectioner = $_POST['camp_selectioner'];
         $certMedeffbb = $_POST['cert_mede_ffbb'];
@@ -37,7 +37,7 @@ function inscriptionCamp($id_cpt)
         $ficheSanitaire = $_POST['fiche_sanitaire'];
         $Demande = $_POST['Demande'];
         $nomResponsablelegal = $_POST['nom_responsable_legal'];
-        $prenomresponsablelegal = $_POST['prenom_responsable_legal'];
+        $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
         $telResponsablelegal = $_POST['tel_responsable_legal'];
         $emailResponsablelegal = $_POST['email_responsable_legal'];
         $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
