@@ -31,6 +31,13 @@ function inscriptionCamp($id_cpt)
         $justificatifqf = $_POST['justificatif_qf'];
         $securitesocial = $_POST['securite_social'];
         $mutuelle = $_POST['mutuelle'];
+        $fichesanitaire = $_POST['fiche_sanitaire'];
+        $Demande = $_POST['Demande'];
+        $nomresponsablelegal = $_POST['nom_responsable_legal'];
+        $prenomresponsablelegal = $_POST['prenom_responsable_legal'];
+        $telresponsablelegal = $_POST['tel_responsable_legal'];
+        $emailresponsablelegal = $_POST['email_responsable_legal'];
+        $adresseresponsablelegal = $_POST['adresse_responsable_legal'];
 
         //treatment images
         if($_FILES){
@@ -152,7 +159,7 @@ function inscriptionCamp($id_cpt)
                 <div class="row">
                     <div class="col">
                         <label for="demande">Fiche sanitaire *</label>
-                        <textarea class="form-control" name="Demende" id="demande" rows="6">Votre demande personnelle</textarea>
+                        <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
                     </div>
                     <div class="col">
                         <h4> Info responsable legal</h4>
