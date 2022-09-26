@@ -24,7 +24,9 @@ function inscriptionCamp($id_cpt)
     if(($_POST)&& isset($_POST['btn_register_camp'])){
         //recover variables from tabble
         $nomstagiaire = $_POST['nom_stagiaire'];
-        $Prenomstagiaire = $_POST['Prenomstagiaire'];
+        $Prenomstagiaire = $_POST['Prenom_stagiaire'];
+        $adressestagiaire = $_POST['adresse_stagiaire'];
+        $taillesselectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
         $campselectioner = $_POST['camp_selectioner'];
         $certmedeffbb = $_POST['cer_mede_ffbb'];
