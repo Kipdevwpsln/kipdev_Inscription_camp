@@ -75,28 +75,27 @@ function inscriptionCamp($id_cpt)
                         <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
                     </div>
                     <div class="col">
-                        <label for="camp_selectionne">Sélectionnez votre camp *</label>
-                        <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
-                        <option selected>' .$tailles . '</option>
-                        <option value="xs">xs</option>
-                        <option value="s">s</option>
-                        <option value="m">m</option>
-                        <option value="l">l</option>
-                        <option value="xl">xl</option>
-                      </select>
+                        <label for="prenom_stagiaire">Votre Prenom*</label>
+                        <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
                     </div>
-
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <label for="adresse_stagiaire">Votre NOM *</label>
+                        <label for="adresse_stagiaire">Votre adresse *</label>
                         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseSagiaire . '">
                     </div>
                     <div class="col">
-                        <label for="prenom_stagiaire">Votre Prénom *</label>
-                        <input type="text" name="prenom_stagiaire" class="form-control" required="required" value=" '.$Prenomstagiaire.'">
-                    </div>
+                    <label for="tailles_selectionne">tailles de vêtements  *</label>
+                    <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required">
+                    <option selected>' .$tailles . '</option>
+                    <option value="xs">xs</option>
+                    <option value="s">s</option>
+                    <option value="m">m</option>
+                    <option value="l">l</option>
+                    <option value="xl">xl</option>
+                  </select>
+                </div>
                 </div>
 
                 <br>
