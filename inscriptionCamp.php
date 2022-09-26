@@ -17,6 +17,7 @@ function inscriptionCamp($id_cpt)
 {
     //les variable
     global $post;
+    $age_stagiare='';
     $idCpt = $postid = get_the_ID();
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
@@ -97,7 +98,7 @@ function inscriptionCamp($id_cpt)
                     </div>
                     <div class="col">
                     <label for="tailles_selectionne">tailles de vêtements  *</label>
-                    <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required">
+                    <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
                     <option selected>' .$tailles . '</option>
                     <option value="xs">xs</option>
                     <option value="s">s</option>
@@ -135,10 +136,6 @@ function inscriptionCamp($id_cpt)
                         <input type="file" name="cert_mede_ffbb" class="form-control" accept=".pdf" required="required">
                     </div>
                     <div class="col">
-                        <label for="justificatif_qf">Justificatif de quotient familial *</label>
-                        <input type="file" name="justificatif_qf" class="form-control" accept=".pdf" required="required">
-                    </div>
-                    <div class="col">
                         <label for="autorisaion_photo">Consentement à la publication de pohto *</label>
                         <input type="file" name="autorisation_photo" class="form-control" accept=".pdf" required="required">
                     </div>
@@ -164,7 +161,10 @@ function inscriptionCamp($id_cpt)
                         <label for="demande">message *</label>
                         <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
                     </div>
-                    <div class="col">
+                    <div class="col">';
+
+                    if ($age_stagiare > 18){
+                        $content_inscription .='
                         <h4> Info responsable legal</h4>
                         <div class="row">
                             <div class="col">
@@ -188,16 +188,22 @@ function inscriptionCamp($id_cpt)
                         </div>
                         <label for="adresse_responsable_legal">Adresse </label>
                         <input type="text" name="adresse_responsable_legal" class="form-control" value=" '.$Prenomstagiaire.'">
+                    ';
+
+                    }
+                else {
+                    $content_inscription.='  
                     </div>
-                </div>
-                <br>
-                <input type="submit" class="btn btn-primary" value="Soumtre" name = "bt_register_camp">
+                    </div>
+                    <br>
+                    <input type="submit" class="btn btn-primary" value="Soumtre" name = "bt_register_camp">
+    
+                </form>
+            </div>
+    
+        </div>';
 
-            </form>
-        </div>
-
-    </div>
-  ';
+                }
   return $content_inscription;
 }
 add_shortcode('kipdev_inscription', 'inscriptionCamp');
