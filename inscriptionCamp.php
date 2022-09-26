@@ -132,7 +132,7 @@ function inscriptionCamp($id_cpt)
                 <div class="row">
                     <div class="col">
                         <label for="demande">Fiche sanitaire *</label>
-                        <textarea class="form-control" name="Demende" id="demande" rows="6">Votre demande personnelle</textarea>
+                        <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
                     </div>
                     <div class="col">
                         <h4> Info responsable legal</h4>
