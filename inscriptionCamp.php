@@ -44,8 +44,10 @@ function inscriptionCamp($id_cpt)
         //treatment images
         if($_FILES){
             $autorisationPhoto = $_FILES['autorisation_photo'];
+            
 
         }
+        
 
         //select camp where id_cpt= $idCpt
         //prepare slq
@@ -98,7 +100,7 @@ function inscriptionCamp($id_cpt)
                     <div class="col">
                     <label for="tailles_selectionne">tailles de vêtements  *</label>
                     <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-                    <option selected>' .$tailles . '</option>
+                    <option selected>' .$taillesSelectioner . '</option>
                     <option value="xs">xs</option>
                     <option value="s">s</option>
                     <option value="m">m</option>
