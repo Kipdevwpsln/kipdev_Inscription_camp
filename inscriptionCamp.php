@@ -26,6 +26,11 @@ function inscriptionCamp($id_cpt)
         $nomstagiaire = $_POST['nom_stagiaire'];
         $Prenomstagiaire = $_POST['Prenomstagiaire'];
         $dateNaissance = $_POST['date_naissance'];
+        $campselectioner = $_POST['camp_selectioner'];
+        $certmedeffbb = $_POST['cer_mede_ffbb'];
+        $justificatifqf = $_POST['justificatif_qf'];
+        $securitesocial = $_POST['securite_social'];
+        $mutuelle = $_POST['mutuelle'];
 
         //treatment images
         if($_FILES){
