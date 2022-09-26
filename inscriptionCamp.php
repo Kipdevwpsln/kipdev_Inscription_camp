@@ -23,23 +23,21 @@ function inscriptionCamp($id_cpt)
 
     if(($_POST)&& isset($_POST['btn_register_camp'])){
         //recover variables from tabble
-        $nomstagiaire = $_POST['nom_stagiaire'];
-        $Prenomstagiaire = $_POST['Prenom_stagiaire'];
-        $adressestagiaire = $_POST['adresse_stagiaire'];
-        $taillesselectioner = $_POST['tailles_selectioner'];
+        $nomStagiaire = $_POST['nom_stagiaire'];
+        $PrenStagiaire = $_POST['Prenom_stagiaire'];
         $dateNaissance = $_POST['date_naissance'];
-        $campselectioner = $_POST['camp_selectioner'];
-        $certmedeffbb = $_POST['cer_mede_ffbb'];
-        $justificatifqf = $_POST['justificatif_qf'];
-        $securitesocial = $_POST['securite_social'];
+        $campSelectioner = $_POST['camp_selectioner'];
+        $certMedeffbb = $_POST['cert_mede_ffbb'];
+        $justifiCatifqf = $_POST['justificatif_qf'];
+        $securiteSocial = $_POST['securite_social'];
         $mutuelle = $_POST['mutuelle'];
-        $fichesanitaire = $_POST['fiche_sanitaire'];
+        $ficheSanitaire = $_POST['fiche_sanitaire'];
         $Demande = $_POST['Demande'];
-        $nomresponsablelegal = $_POST['nom_responsable_legal'];
+        $nomResponsablelegal = $_POST['nom_responsable_legal'];
         $prenomresponsablelegal = $_POST['prenom_responsable_legal'];
-        $telresponsablelegal = $_POST['tel_responsable_legal'];
-        $emailresponsablelegal = $_POST['email_responsable_legal'];
-        $adresseresponsablelegal = $_POST['adresse_responsable_legal'];
+        $telResponsablelegal = $_POST['tel_responsable_legal'];
+        $emailResponsablelegal = $_POST['email_responsable_legal'];
+        $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
         //treatment images
         if($_FILES){
@@ -88,6 +86,7 @@ function inscriptionCamp($id_cpt)
                         <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
                     </div>
                 </div>
+                <br>
 
                 <div class="row">
                     <div class="col">
@@ -160,7 +159,7 @@ function inscriptionCamp($id_cpt)
                 <br>
                 <div class="row">
                     <div class="col">
-                        <label for="demande">Fiche sanitaire *</label>
+                        <label for="demande">message *</label>
                         <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
                     </div>
                     <div class="col">
