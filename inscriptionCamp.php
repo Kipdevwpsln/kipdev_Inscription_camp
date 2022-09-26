@@ -186,11 +186,13 @@ function inscriptionCamp($id_cpt)
                         </div>
                         <label for="adresse_responsable_legal">Adresse </label>
                         <input type="text" name="adresse_responsable_legal" class="form-control" value=" '.$Prenomstagiaire.'">
-                    </div>';
+                    ';
 
                     }
                 else {
-                    $content_inscription.='  </div>
+                    $content_inscription.='  
+                    </div>
+                    </div>
                     <br>
                     <input type="submit" class="btn btn-primary" value="Soumtre" name = "bt_register_camp">
     
