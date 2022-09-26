@@ -34,6 +34,7 @@ function inscriptionCamp($id_cpt)
 
         //treatment images
         if($_FILES){
+            $autorisationPhoto = $_FILES['autorisation_photo'];
 
         }
 
@@ -108,8 +109,8 @@ function inscriptionCamp($id_cpt)
                         <input type="file" name="justificatif_qf" class="form-control" accept=".pdf" required="required">
                     </div>
                     <div class="col">
-                        <label for="justificatif_qf">Consentement à la publication de pohto *</label>
-                        <input type="file" name="justificatif_qf" class="form-control" accept=".pdf" required="required">
+                        <label for="autorisaion_photo">Consentement à la publication de pohto *</label>
+                        <input type="file" name="autorisation_photo" class="form-control" accept=".pdf" required="required">
                     </div>
                 </div>
                 <br>
