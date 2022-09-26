@@ -23,11 +23,11 @@ function inscriptionCamp($id_cpt)
 
     if(($_POST)&& isset($_POST['btn_register_camp'])){
         //recover variables from tabble
-        $nomstagiaire = $_POST['nom_stagiaire'];
-        $Prenomstagiaire = $_POST['Prenomstagiaire'];
+        $nomStagiaire = $_POST['nom_stagiaire'];
+        $PrenStagiaire = $_POST['Prenom_stagiaire'];
         $dateNaissance = $_POST['date_naissance'];
-        $campselectioner = $_POST['camp_selectioner'];
-        $certmedeffbb = $_POST['cer_mede_ffbb'];
+        $campSelectioner = $_POST['camp_selectioner'];
+        $certMedeffbb = $_POST['cer_mede_ffbb'];
         $justificatifqf = $_POST['justificatif_qf'];
         $securitesocial = $_POST['securite_social'];
         $mutuelle = $_POST['mutuelle'];
@@ -86,6 +86,7 @@ function inscriptionCamp($id_cpt)
                         <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
                     </div>
                 </div>
+                <br>
 
                 <div class="row">
                     <div class="col">
