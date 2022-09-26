@@ -26,6 +26,8 @@ function inscriptionCamp($id_cpt)
         //recover variables from tabble
         $nomStagiaire = $_POST['nom_stagiaire'];
         $PrenStagiaire = $_POST['Prenom_stagiaire'];
+        $adresseStagiaire = $_POST['adresse_stagiaire'];
+        $taillesSselectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
         $campSelectioner = $_POST['camp_selectioner'];
         $certMedeffbb = $_POST['cert_mede_ffbb'];
