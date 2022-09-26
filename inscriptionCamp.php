@@ -31,7 +31,6 @@ function inscriptionCamp($id_cpt)
         $dateNaissance = $_POST['date_naissance'];
         $campSelectioner = $_POST['camp_selectioner'];
         $certMedeffbb = $_POST['cert_mede_ffbb'];
-        $justifiCatifqf = $_POST['justificatif_qf'];
         $securiteSocial = $_POST['securite_social'];
         $mutuelle = $_POST['mutuelle'];
         $ficheSanitaire = $_POST['fiche_sanitaire'];
