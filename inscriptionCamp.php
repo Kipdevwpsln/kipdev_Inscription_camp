@@ -31,6 +31,13 @@ function inscriptionCamp($id_cpt)
         $justificatifqf = $_POST['justificatif_qf'];
         $securitesocial = $_POST['securite_social'];
         $mutuelle = $_POST['mutuelle'];
+        $fichesanitaire = $_POST['fiche_sanitaire'];
+        $Demande = $_POST['Demande'];
+        $nomresponsablelegal = $_POST['nom_responsable_legal'];
+        $prenomresponsablelegal = $_POST['prenom_responsable_legal'];
+        $telresponsablelegal = $_POST['tel_responsable_legal'];
+        $emailresponsablelegal = $_POST['email_responsable_legal'];
+        $adresseresponsablelegal = $_POST['adresse_responsable_legal'];
 
         //treatment images
         if($_FILES){
