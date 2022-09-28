@@ -53,18 +53,18 @@ function inscriptionCamp($id_cpt)
             $fileSize = $_FILES['file'] ['fileSize'];
             $fileTemp = $_FILES['file'] ['temp_name'];
             $fileType = $_FILES['file'] ['type'];
-            $path = "./upload" 
+            $path = "./upload/documents";
             $imageUrl = $_FILES['file'] ['temp_name'];
 
-            if ($fileSize < 1000000){
+            if ($fileSize < 500000){
                 $validext = array(
                     "pdf" => "file/pdf"
                 );
                 $actualext =strtolower(pathinfo($fileType["name"], PATHINFO_EXTENSION));
                 if (array_key_exists($actualext, $validext) && array($fileType["type"], $validext)){
-                    move_uploaded_file($fileType["temp_name"], './upload/'. basename($fileType["name"]));
+                    move_uploaded_file($fileType["temp_name"], './upload/documents'. basename($fileType["name"]));
             }else{
-                echo "fele too big";
+                echo "file too big";
             }
         }
         
@@ -105,9 +105,11 @@ function inscriptionCamp($id_cpt)
         
         //calculating the age
         $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('d-m-Y')));
-
-
+}
     }
+
+
+
     $content_inscription='';
     $content_inscription='
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -155,10 +157,24 @@ function inscriptionCamp($id_cpt)
                     <div class="col">
                         <label for="camp_selectionne">Sélectionnez votre camp *</label>
                         <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
-                        <option selected>' . $categorie . '</option>
-                        <option value="juene">Jeune</option>
-                        <option value="pro">Pro</option>
-                        <option value="élite">Elite</option>
+                        <option selected>' . $$campName. '</option>';
+
+                        //seelect all the camps that can partcipants can register
+    //the camps that has status "publié"
+    $sqlSelectCamp ="SELECT * FROM mm_camp WHERE 'date_debut'> date(d-m-y) and 'statut' = 'publié'";
+    try {
+        $conn =new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" .DB_CHARSET, DB_USER, DB_PASSWORD);
+        $list= $conn->query($sqlSelectCamp);
+        while (mysql_fetch_array($list)) {
+
+            $content_inscription.= '<option value='.$list['id_camp'].'>'.$file['nom_camp'].'</option>';
+        }
+
+    } catch (PDOException $e) {
+        echo "Error while selecting all camps from the data base: '.$e.'";
+    }
+
+    $content_inscription.='
                       </select>
                     </div>
                 </div>
