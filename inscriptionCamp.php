@@ -31,6 +31,9 @@ function inscriptionCamp($id_cpt)
         $dateNaissance = $_POST['date_naissance'];
         $campSelectioner = $_POST['camp_selectioner'];
         $Demande = $_POST['Demande'];
+        ////////////////////////////////////////////////////////////////
+        $idResponsableLegales = $_POST['id_cpt'];
+        ////////////////////////////////////////////////////////////////
         $nomResponsablelegal = $_POST['nom_responsable_legal'];
         $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
         $telResponsablelegal = $_POST['tel_responsable_legal'];
@@ -86,7 +89,44 @@ function inscriptionCamp($id_cpt)
                 echo "Something went wrong '.$e.'";
             }
             $conn = null;
-        //PDO connection to the DB
+        //PDO connection to the DB to insert the participants' information
+        $sqlInsert = "INSERT INTO mm_stagiaire (
+            date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire, 
+            date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
+            lien_consentement_photo, lien_securite_social,lien_mutuelle, lien_fiche_sanitaire, demande, lien_photo_passport)
+        value= (:date_inscription,
+               :id_camp,
+               :id_responsbal_legal,
+               :nom_stagiaire,
+               :prenom_stagiaire,
+               :date_naissance,
+               :adresse_stagiaire,
+               :lien_cert_med_licence_FBB,
+               :lien_justification_qf,
+               :lien_consentement_photo,
+               :lien_securite_social,
+               :lien_mutuelle,
+               :lien_fiche_sanitaire,
+               :demande,
+               :lien_photo_passport)";
+try {
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+    $smt= $conn->prepair($sqlInsert);
+
+    $smt->bindValue(':date_inscription', $date_naissance);
+    $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
+    $smt->bindValue(':id_responsbal_legal', $idResponsableLegales, PDO::PARAM_INT);
+    $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
+    $smt->bindValue(':prenom_stagiaire', $idResponsableLegales, PDO::PARAM_STR);
+    $smt->bindValue(':date_naissance', $date_naissance);
+    $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
+    $smt->bindValue(':lien_cert_med_licence_FBB', $lien_cert_med_licence_FBB, PDO::PARAM_STR);
+    $smt->bindValue(':lien_justification_qf', $Justification_qf
+
+} catch (\Throwable $th) {
+    //throw $th;
+}
+
 
         //binding of data declaire some variables
         //close connection
@@ -128,7 +168,7 @@ function inscriptionCamp($id_cpt)
                 <div class="row">
                     <div class="col">
                         <label for="adresse_stagiaire">Votre adresse *</label>
-                        <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseSagiaire . '">
+                        <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
                     </div>
                     <div class="col">
                     <label for="tailles_selectionne">tailles de vêtements  *</label>
