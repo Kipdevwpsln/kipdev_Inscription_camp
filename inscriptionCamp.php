@@ -47,9 +47,7 @@ function inscriptionCamp($id_cpt)
         //treatment images
         if(($_FILES['autorisation_photo'] ['cert_mede_ffbb'] ['securite_social'] ['fiche_sanitaire'] ['error'] == 0)){
             $autorisationPhoto = $_FILES['autorisation_photo'];
-            $certmedeffbb = $_FILES['cert_mede_ffbb'];
-            $securitesocial = $_FILES['securite_social'];
-            $fichesanitaire = $_FILES['fiche_sanitaire'];
+            
 
             //other variables
             $fileSize = $_FILES['file'] ['fileSize'];
@@ -69,11 +67,8 @@ function inscriptionCamp($id_cpt)
                 echo "fele too big";
             }
         }
-        elseif ($_FILES['error'] != 0){
-            $imageUrl = $_FILES['temp_name'];
-        }
-    }
-    
+        
+
         //select camp where id_cpt= $idCpt
         //PDO connection to the DB
     try {
@@ -141,7 +136,7 @@ function inscriptionCamp($id_cpt)
                     <div class="col">
                     <label for="tailles_selectionne">tailles de vêtements  *</label>
                     <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-                    <option selected>' .$tailles . '</option>
+                    <option selected>' .$taillesSelectioner . '</option>
                     <option value="xs">xs</option>
                     <option value="s">s</option>
                     <option value="m">m</option>
