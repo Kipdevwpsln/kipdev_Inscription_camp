@@ -47,6 +47,9 @@ function inscriptionCamp($id_cpt)
         //treatment images
         if(($_FILES['autorisation_photo'] ['cert_mede_ffbb'] ['securite_social'] ['fiche_sanitaire'] ['error'] == 0)){
             $autorisationPhoto = $_FILES['autorisation_photo'];
+            $certMedeffbb = $_FILES['cert_mede_ffbb'];
+            $securiteSocial = $_FILES['securite_social'];
+            $ficheSanitaire = $_FILES['fiche_sanitaire'];
             
 
             //other variables
