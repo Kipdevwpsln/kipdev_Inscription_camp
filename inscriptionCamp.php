@@ -41,16 +41,57 @@ function inscriptionCamp($id_cpt)
         $emailResponsablelegal = $_POST['email_responsable_legal'];
         $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
+        //other variables
+        $ageStagiaire = $_POST['age_stagiaire'];
+
         //treatment images
-        if($_FILES){
+        if(($_FILES['autorisation_photo'] ['cert_mede_ffbb'] ['securite_social'] ['fiche_sanitaire'] ['error'] == 0)){
             $autorisationPhoto = $_FILES['autorisation_photo'];
+            $certmedeffbb = $_FILES['cert_mede_ffbb'];
+            $securitesocial = $_FILES['securite_social'];
+            $fichesanitaire = $_FILES['fiche_sanitaire'];
 
+            //other variables
+            $fileSize = $_FILES['file'] ['fileSize'];
+            $fileTemp = $_FILES['file'] ['temp_name'];
+            $fileType = $_FILES['file'] ['type'];
+            $path = "./upload" 
+            $imageUrl = $_FILES['file'] ['temp_name'];
+
+            if ($fileSize < 1000000){
+                $validext = array(
+                    "pdf" => "file/pdf"
+                );
+                $actualext =strtolower(pathinfo($fileType["name"], PATHINFO_EXTENSION));
+                if (array_key_exists($actualext, $validext) && array($fileType["type"], $validext)){
+                    move_uploaded_file($fileType["temp_name"], './upload/'. basename($fileType["name"]));
+            }else{
+                echo "fele too big";
+            }
         }
-
+        elseif ($_FILES['error'] != 0){
+            $imageUrl = $_FILES['temp_name'];
+        }
+    }
+    
         //select camp where id_cpt= $idCpt
+        //PDO connection to the DB
+    try {
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" .DB_CHARSET, DB_USER, DB_PASSWORD);
+
+        $result= $conn->prepare($sql);
+                $result->bindValue('id_cpt' ,$idCpt);
+                $result->execute(['id_cpt' => $idCpt]);
+                $camp=$result->fetch(PDO::FETCH_ASSOC);
+
+                $campName = $camp['camp_name'];
         //prepare slq
         $sql= "SELECT camp_name FROM camp WHERE id_cpt= $idCpt";
-
+    }
+    catch (PDOException $e) {
+        echo "Something went wrong '.$e.'"
+    }
+    $conn = null;
         //PDO connection to the DB
 
         //binding of data declaire some variables
@@ -67,6 +108,8 @@ function inscriptionCamp($id_cpt)
 
         //insert into the next table stagiaires 
         
+        //calculating the age
+        $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('d-m-Y')));
 
 
     }
@@ -195,7 +238,7 @@ function inscriptionCamp($id_cpt)
                     </div>
                     </div>
                     <br>
-                    <input type="submit" class="btn btn-primary" value="Soumtre" name = "bt_register_camp">
+                    <input type="submit" class="btn btn-primary" value="Soumtre" name = "btn_register_camp">
     
                 </form>
             </div>
