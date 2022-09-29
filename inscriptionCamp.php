@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       kipdev_inscriptionCamp
- * description_camp:       instal to create and manage camps. also helps to generate an article from the information available
+ * description_camp:  instal to create and manage camps. also helps to generate an article from the information available
  * Version:           1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -17,12 +17,10 @@ function inscriptionCamp($id_cpt)
 {
     //les variable
     global $post;
-    $idcpt= $post->ID;
     $age_stagiare = '';
     $idCpt = get_the_ID();
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
-    echo $idCpt;
 
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //id responsable legal
@@ -67,7 +65,7 @@ function inscriptionCamp($id_cpt)
         } catch (PDO $e) {
             echo "problem encountered while connection to the DB:" . $e;
         }
-            //other variables
+        //other variables
         $ageStagiaire = $_POST['age_stagiaire'];
 
         //treatment images
@@ -87,46 +85,48 @@ function inscriptionCamp($id_cpt)
                 ($justificatifmutuelle['size'] <= (1000000))) {
 
                 $extensionAutorisees = array(
-                 "pdf" => "application/pdf");
-    
-            //strtolower pour être sûr que l'extension est en minuscules
-            $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
+                    "pdf" => "application/pdf");
 
-            //Si l'extension/MIME ok
-            if (array_key_exists($extension, $extensionAutorisees)
-                && in_array($autorisationPhoto["type"], $extensionAutorisees)
-                && in_array($certMedeffbb["type"], $extensionAutorisees)
-                && in_array($securiteSocial["type"], $extensionAutorisees)
-                && in_array($ficheSanitaire["type"], $extensionAutorisees)
-                && in_array($justificatifmutuelle["type"], $extensionAutorisees)) {
+                //strtolower pour être sûr que l'extension est en minuscules
+                $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
 
-                //déplacer le fichier du dossier temporaire vers le dossier uploads/propositions
-                move_uploaded_file($autorisationPhoto["tmp_name"], './wp-content/uploads/camps/images/' . basename($autorisationPhoto["name"]));
-                $cheminDocAautorisationPhoto = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $autorisationPhoto["name"] . '';
+                //Si l'extension/MIME ok
+                if (array_key_exists($extension, $extensionAutorisees)
+                    && in_array($autorisationPhoto["type"], $extensionAutorisees)
+                    && in_array($certMedeffbb["type"], $extensionAutorisees)
+                    && in_array($securiteSocial["type"], $extensionAutorisees)
+                    && in_array($ficheSanitaire["type"], $extensionAutorisees)
+                    && in_array($justificatifmutuelle["type"], $extensionAutorisees)) {
 
-                move_uploaded_file($certMedeffbb["tmp_name"], './wp-content/uploads/camps/images/' . basename($certMedeffbb["name"]));
-                $cheminCertMedeffbb = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $certMedeffbb["name"] . '';
+                    //déplacer le fichier du dossier temporaire vers le dossier uploads/propositions
+                    move_uploaded_file($autorisationPhoto["tmp_name"], './wp-content/uploads/camps/images/' . basename($autorisationPhoto["name"]));
+                    $cheminDocAautorisationPhoto = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $autorisationPhoto["name"] . '';
 
-                move_uploaded_file($securiteSocial["tmp_name"], './wp-content/uploads/camps/images/' . basename($securiteSocial["name"]));
-                $cheminDocSecuriteSocial = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $securiteSocial["name"] . '';
+                    move_uploaded_file($certMedeffbb["tmp_name"], './wp-content/uploads/camps/images/' . basename($certMedeffbb["name"]));
+                    $cheminCertMedeffbb = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $certMedeffbb["name"] . '';
 
-                move_uploaded_file($ficheSanitaire["tmp_name"], './wp-content/uploads/camps/images/' . basename($ficheSanitaire["name"]));
-                $cheminFicheSanitaire = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $ficheSanitaire["name"] . '';
+                    move_uploaded_file($securiteSocial["tmp_name"], './wp-content/uploads/camps/images/' . basename($securiteSocial["name"]));
+                    $cheminDocSecuriteSocial = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $securiteSocial["name"] . '';
 
-                move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
-                $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
-            }
-        }  
-        } else if ($_FILES["error"] != 0) {
+                    move_uploaded_file($ficheSanitaire["tmp_name"], './wp-content/uploads/camps/images/' . basename($ficheSanitaire["name"]));
+                    $cheminFicheSanitaire = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $ficheSanitaire["name"] . '';
+
+                    move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
+                    $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
+                }
+                else{
+                    echo "extention not autirised"; 
+                }
+            
+            } else  ($_FILES["error"] != 0) {
             echo "error avec téléchargement d'image";
+             }
+        
 
-        } else {
-            echo "quel que fichers sont trop lourde";
-        }
-        //select camp where id_cpt= $idCpt
-        //PDO connection to the DB
-        $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
-        try {
+            //select camp where id_cpt= $idCpt
+            //PDO connection to the DB
+            $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
+            try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
 
             $result = $conn->prepare($sql);
@@ -137,18 +137,18 @@ function inscriptionCamp($id_cpt)
             $idCamp = $camp['id_camp'];
             $numMax = $camp['max_participants'];
             $nombreInscrits = $camp['nombre_inscrits'];
-        } catch (PDOException $e) {
+         } catch (PDOException $e) {
             echo "Something went wrong while selectin a camp'.$e.'";
-        }
+            }
 
-        $conn = null;
-        //PDO connection to the DB to insert the participants' information
-        if ($numMax > $nombreInscrits) {
+            $conn = null;
+            //PDO connection to the DB to insert the participants' information
+             if ($numMax > $nombreInscrits) {
             $sqlInsert = "INSERT INTO mm_stagiaire (
             date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire,
             date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
             lien_consentement_photo, lien_securite_social,lien_mutuelle, lien_fiche_sanitaire, demande)
-        value= (:date_inscription,
+             value= (:date_inscription,
                :id_camp,
                :id_responsbal_legal,
                :nom_stagiaire,
