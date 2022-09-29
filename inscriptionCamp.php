@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       kipdev_inscription_camp
- * description_camp:       instal to create and manage camps. also helps to generate an article from the information available
+ * Plugin Name:       kipdev_inscriptionCamp
+ * description_camp:  instal to create and manage camps. also helps to generate an article from the information available
  * Version:           1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -15,170 +15,50 @@
  */
 function inscriptionCamp($id_cpt)
 {
-    //les variable
     global $post;
     $age_stagiare = '';
     $idCpt = $postid = get_the_ID();
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
 
-    if (($_POST) && isset($_POST['btn_register_camp'])) {
-        // Recover variables from table
-        $nomStagiaire = $_POST['nom_stagiaire'];
-        $PrenStagiaire = $_POST['Prenom_stagiaire'];
-        $adresseStagiaire = $_POST['adresse_stagiaire'];
-        $taillesSelectioner = $_POST['tailles_selectioner'];
-        $dateNaissance = $_POST['date_naissance'];
-        $campSelectioner = $_POST['camp_selectioner'];
-        $Demande = $_POST['Demande'];
-        ////////////////////////////////////////////////////////////////
-        $idResponsableLegales = $_POST['id_cpt'];
-        ////////////////////////////////////////////////////////////////
-        $nomResponsablelegal = $_POST['nom_responsable_legal'];
-        $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
-        $telResponsablelegal = $_POST['tel_responsable_legal'];
-        $emailResponsablelegal = $_POST['email_responsable_legal'];
-        $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
+    if (isset($_POST) && isset($_POST['btn_register_camp'])) {
+        //create responsable legal
+        if (isset($_POST['nom_responsable_legal'])) {
+            $nomResponsablelegal = $_POST['nom_responsable_legal'];
+            $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
+            $telResponsablelegal = $_POST['tel_responsable_legal'];
+            $emailResponsablelegal = $_POST['email_responsable_legal'];
+            $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
-        //other variables
-        $ageStagiaire = $_POST['age_stagiaire'];
+            $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
+                                   VALUES (:nom_responsable_legal,
+                                           :prenom_responsable_legal,
+                                           :tel_responsable_legal,
+                                           :email_responsable_legal,
+                                           :adresse_responsable_legal)";
 
-        //treatment images
-        if (isset($_FILES) && $_FILES["error"] === 0) {
+            try {
+                $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+                $stmp = $conn->prepaired($sqlInsertRespLegal);
 
-            $autorisationPhoto = $_FILES['autorisation_photo'];
-            $certMedeffbb = $_FILES['cert_mede_ffbb'];
-            $securiteSocial = $_FILES['securite_social'];
-            $ficheSanitaire = $_FILES['fiche_sanitaire'];
-            $justificatifmutuelle = $_FILES['mutuelle'];
+                $stmp->bindValue('nom_responsable_legal', $nomResponsablelegal, PDO::PARAM_STR);
+                $stmp->bindValue('prenom_responsable_legal', $prenomResponsablelegal, PDO::PARAM_STR);
+                $stmp->bindValue('tel_responsable_legal', $telResponsablelegal, PDO::PARAM_STR);
+                $stmp->bindValue('email_responsable_legal', $emailResponsablelegal, PDO::PARAM_STR);
+                $stmp->bindValue('adresse_responsable_legal', $adresseResponsablelegal, PDO::PARAM_STR);
 
-//Si le fichier n'est pas trop volumineux(1Mo accepté)
-            if ($autorisationPhoto['size'] <= (1000000) &&
-                ($certMedeffbb['size'] <= (1000000)) &&
-                ($securiteSocial['size'] <= (1000000)) &&
-                ($ficheSanitaire['size'] <= (1000000)) &&
-                ($justificatifmutuelle['size'] <= (1000000))) {
-
-                $extensionAutorisees = array(
-                    "pdf" => "application/pdf");
+                $idRespLegal = $conn->lastInsertId();
+                
+            } catch (PDO $e) {
+                echo "problem encountered while connection to the DB:" . $e;
             }
 
-            //strtolower pour être sûr que l'extension est en minuscules
-            $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
-
-            //Si l'extension/MIME ok
-            if (array_key_exists($extension, $extensionAutorisees)
-                && in_array($autorisationPhoto["type"], $extensionAutorisees)
-                && in_array($certMedeffbb["type"], $extensionAutorisees)
-                && in_array($securiteSocial["type"], $extensionAutorisees)
-                && in_array($ficheSanitaire["type"], $extensionAutorisees)
-                && in_array($justificatifmutuelle["type"], $extensionAutorisees)) {
-
-                //déplacer le fichier du dossier temporaire vers le dossier uploads/propositions
-                move_uploaded_file($autorisationPhoto["tmp_name"], './wp-content/uploads/camps/images/' . basename($autorisationPhoto["name"]));
-                $cheminDocAautorisationPhoto = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $autorisationPhoto["name"] . '';
-
-                move_uploaded_file($certMedeffbb["tmp_name"], './wp-content/uploads/camps/images/' . basename($certMedeffbb["name"]));
-                $cheminCertMedeffbb = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $certMedeffbb["name"] . '';
-
-                move_uploaded_file($securiteSocial["tmp_name"], './wp-content/uploads/camps/images/' . basename($securiteSocial["name"]));
-                $cheminDocSecuriteSocial = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $securiteSocial["name"] . '';
-
-                move_uploaded_file($ficheSanitaire["tmp_name"], './wp-content/uploads/camps/images/' . basename($ficheSanitaire["name"]));
-                $cheminFicheSanitaire = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $ficheSanitaire["name"] . '';
-
-                move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
-                $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
-            }
-        } else if ($_FILES["error"] != 0) {
-            echo "error avec téléchargement d'image";
-
-        } else {
-            echo "quel que fichers sont trop lourde";
         }
-        //select camp where id_cpt= $idCpt
-        //PDO connection to the DB
-        $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
-        try {
-            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-
-            $result = $conn->prepare($sql);
-            $result->bindValue('id_cpt', $idCpt);
-            $camp = $result->fetch(PDO::FETCH_ASSOC);
-
-            $nomCamp = $camp['camp_name'];
-            $idCamp = $camp['id_camp'];
-            $numMax = $camp['max_participants'];
-            $nombreInscrits = $camp['nombre_inscrits'];
-        } catch (PDOException $e) {
-            echo "Something went wrong while selectin a camp'.$e.'";
-        }
-
-        if ($numMax > $nombreInscrits) {
+        if (isset($_GET['id_stagiaire'])) {
+            //modification
 
         }
-        $conn = null;
-        //PDO connection to the DB to insert the participants' information
-        $sqlInsert = "INSERT INTO mm_stagiaire (
-            date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire,
-            date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
-            lien_consentement_photo, lien_securite_social,lien_mutuelle, lien_fiche_sanitaire, demande, lien_photo_passport)
-        value= (:date_inscription,
-               :id_camp,
-               :id_responsbal_legal,
-               :nom_stagiaire,
-               :prenom_stagiaire,
-               :date_naissance,
-               :adresse_stagiaire,
-               :lien_cert_med_licence_FBB,
-               :lien_justification_qf,
-               :lien_consentement_photo,
-               :lien_securite_social,
-               :lien_mutuelle,
-               :lien_fiche_sanitaire,
-               :demande,
-               :lien_photo_passport)";
-        try {
-            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-            $smt = $conn->prepair($sqlInsert);
-
-            $smt->bindValue(':date_inscription', $date_naissance);
-            $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
-            $smt->bindValue(':id_responsbal_legal', $idResponsableLegales, PDO::PARAM_INT);
-            $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-            $smt->bindValue(':prenom_stagiaire', $idResponsableLegales, PDO::PARAM_STR);
-            $smt->bindValue(':date_naissance', $date_naissance);
-            $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-            $smt->bindValue(':lien_cert_med_licence_FBB', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
-            $smt->bindValue(':lien_consentement_photo', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
-            $smt->bindValue(':lien_securite_social', $cheminDocSecuriteSocial, PDO::PARAM_STR);
-            $smt->bindValue(':lien_mutuelle', $cheminDocjustificatifMutuelle, PDO::PARAM_STR);
-            $smt->bindValue(':lien_fiche_sanitaire', $ficheSanitaire, PDO::PARAM_STR);
-
-            $smt->execute();
-
-        } catch (PDOException $e) {
-            echo "insertion to the tabel mm_stagiaire failed '.$e.';";
-        }
-
-        //binding of data declaire some variables
-        //close connection
-
-        //get user data
-        ///nom....prenom....Date_naisance
-
-        //PDO connection_aborted//
-        //Insert data into the data base
-        //table responsable
-        //get(lastInserted) for responsable legaga
-
-        //insert into the next table stagiaires
-
-        //calculating the age
-        $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('d-m-Y')));
     }
-
-    $content_inscription = '';
     $content_inscription = '
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <div class="container">
@@ -317,7 +197,6 @@ function inscriptionCamp($id_cpt)
         </div>
 
         </div>';
-
     return $content_inscription;
 }
 add_shortcode('kipdev_inscription', 'inscriptionCamp');
