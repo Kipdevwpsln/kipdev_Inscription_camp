@@ -68,8 +68,9 @@ function inscriptionCamp($id_cpt)
                 echo "problem encountered while connection to the DB:" . $e;
             }
             // the rest of the variables
-
-
+        
+        $sqlInsertStagiaire= "INSERT INTO mm_stagiaire (date_inscription, id_camp,id_responsable_legal, nom_stagiaire, prenom_stagiaire, adresse_stagiaire,
+        date_naissance, lien_
     }
     if (isset($_GET['id_stagiaire'])) {
         echo "you are now modifying the registration";
