@@ -68,7 +68,18 @@ function inscriptionCamp($id_cpt)
                 echo "problem encountered while connection to the DB:" . $e;
             }
             // the rest of the variables
-
+            $nomstagiaire = $_POST['nom_stagiaire'];
+            $Prenomstagiaire = $_POST['prenom_stagiaire'];
+            $adressestagiaire = $_POST['adresse_stagiaire'];
+            $taillesselectioner = $_POST['tailles_selectioner'];
+            $datenaissance = $_POST['date_naissance'];
+            $campselectioner = $_POST['camp_selectioner'];
+            $certmedeffbb = $_POST['cert_mede_ffbb'];
+            $autorisation_photo = $_POST['autorisation_photo'];
+            $securitesocial = $_POST['securite_social'];
+            $mutuelle = $_POST['mutuelle'];
+            $fichesanitaire = $_POST['fiche_sanitaire'];
+            $Demande = $_POST[' demande'];
 
     }
     if (isset($_GET['id_stagiaire'])) {
@@ -168,7 +179,7 @@ function inscriptionCamp($id_cpt)
     </div>
     <div class="col">
     <label for="mutuelle">Justificatif de mutuelle </label>
-    <input type="file" name=" mutuelle" class="form-control" accept=".pdf">
+    <input type="file" name="mutuelle" class="form-control" accept=".pdf">
     </div>
     <div class="col">
     <label for="fiche_sanitaire">Fiche sanitaire *</label>
