@@ -42,84 +42,85 @@ function inscriptionCamp($id_cpt)
 
         //other variables
         $ageStagiaire = $_POST['age_stagiaire'];
-        
 
         //treatment images
-if (isset($_FILES) && $_FILES["error"] === 0) {
+        if (isset($_FILES) && $_FILES["error"] === 0) {
 
-    $autorisationPhoto = $_FILES['autorisation_photo'];
-    $certMedeffbb = $_FILES['cert_mede_ffbb'];
-    $securiteSocial = $_FILES['securite_social'];
-    $ficheSanitaire = $_FILES['fiche_sanitaire'];
-    $justificatifmutuelle= $_FILES['mutuelle'];
+            $autorisationPhoto = $_FILES['autorisation_photo'];
+            $certMedeffbb = $_FILES['cert_mede_ffbb'];
+            $securiteSocial = $_FILES['securite_social'];
+            $ficheSanitaire = $_FILES['fiche_sanitaire'];
+            $justificatifmutuelle = $_FILES['mutuelle'];
 
 //Si le fichier n'est pas trop volumineux(1Mo accepté)
-if ($autorisationPhoto['size'] <= (1000000) &&
-    ($certMedeffbb['size'] <= (1000000))&&
-    ($securiteSocial['size'] <= (1000000))&&
-    ($ficheSanitaire['size'] <= (1000000))&&
-    ($justificatifmutuelle['size'] <= (1000000))) {
+            if ($autorisationPhoto['size'] <= (1000000) &&
+                ($certMedeffbb['size'] <= (1000000)) &&
+                ($securiteSocial['size'] <= (1000000)) &&
+                ($ficheSanitaire['size'] <= (1000000)) &&
+                ($justificatifmutuelle['size'] <= (1000000))) {
 
-    $extensionAutorisees = array(
-        "pdf" => "application/pdf");
-    }
-
-    //strtolower pour être sûr que l'extension est en minuscules
-    $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
-
-    //Si l'extension/MIME ok
-    if (array_key_exists($extension, $extensionAutorisees)
-     && in_array($autorisationPhoto["type"], $extensionAutorisees)
-     && in_array($certMedeffbb["type"], $extensionAutorisees)
-     && in_array($securiteSocial["type"], $extensionAutorisees)
-     && in_array($ficheSanitaire["type"], $extensionAutorisees)
-     && in_array($justificatifmutuelle["type"], $extensionAutorisees)) {
-
-        //déplacer le fichier du dossier temporaire vers le dossier uploads/propositions
-        move_uploaded_file($autorisationPhoto["tmp_name"], './wp-content/uploads/camps/images/' . basename($autorisationPhoto["name"]));
-        $cheminDocAautorisationPhoto = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $autorisationPhoto["name"] . '';
-
-        move_uploaded_file($certMedeffbb["tmp_name"], './wp-content/uploads/camps/images/' . basename($certMedeffbb["name"]));
-        $cheminCertMedeffbb = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $certMedeffbb["name"] . '';
-
-        move_uploaded_file($securiteSocial["tmp_name"], './wp-content/uploads/camps/images/' . basename($securiteSocial["name"]));
-        $cheminDocSecuriteSocial = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $securiteSocial["name"] . '';
-
-        move_uploaded_file($ficheSanitaire["tmp_name"], './wp-content/uploads/camps/images/' . basename($ficheSanitaire["name"]));
-        $cheminFicheSanitaire = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $ficheSanitaire["name"] . '';
-
-        move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
-        $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
-    }
-} else if ($_FILES["error"] != 0) {
-echo  "error avec téléchargement d'image";
-
-}
-else{
-    echo "quel que fichers sont trop lourde";
-}
-        //select camp where id_cpt= $idCpt
-            //PDO connection to the DB
-            $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
-            try {
-                $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-
-                $result = $conn->prepare($sql);
-                $result->bindValue('id_cpt', $idCpt);
-                $camp = $result->fetch(PDO::FETCH_ASSOC);
-
-                $nomCamp = $camp['camp_name'];
-                $idCamp = $camp['id_camp'];
-                $numMax = $camp['max_participants'];
-            } catch (PDOException $e) {
-                echo "Something went wrong while selectin a camp'.$e.'";
+                $extensionAutorisees = array(
+                    "pdf" => "application/pdf");
             }
 
-            if ($numMax>
-            $conn = null;
+            //strtolower pour être sûr que l'extension est en minuscules
+            $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
+
+            //Si l'extension/MIME ok
+            if (array_key_exists($extension, $extensionAutorisees)
+                && in_array($autorisationPhoto["type"], $extensionAutorisees)
+                && in_array($certMedeffbb["type"], $extensionAutorisees)
+                && in_array($securiteSocial["type"], $extensionAutorisees)
+                && in_array($ficheSanitaire["type"], $extensionAutorisees)
+                && in_array($justificatifmutuelle["type"], $extensionAutorisees)) {
+
+                //déplacer le fichier du dossier temporaire vers le dossier uploads/propositions
+                move_uploaded_file($autorisationPhoto["tmp_name"], './wp-content/uploads/camps/images/' . basename($autorisationPhoto["name"]));
+                $cheminDocAautorisationPhoto = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $autorisationPhoto["name"] . '';
+
+                move_uploaded_file($certMedeffbb["tmp_name"], './wp-content/uploads/camps/images/' . basename($certMedeffbb["name"]));
+                $cheminCertMedeffbb = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $certMedeffbb["name"] . '';
+
+                move_uploaded_file($securiteSocial["tmp_name"], './wp-content/uploads/camps/images/' . basename($securiteSocial["name"]));
+                $cheminDocSecuriteSocial = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $securiteSocial["name"] . '';
+
+                move_uploaded_file($ficheSanitaire["tmp_name"], './wp-content/uploads/camps/images/' . basename($ficheSanitaire["name"]));
+                $cheminFicheSanitaire = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $ficheSanitaire["name"] . '';
+
+                move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
+                $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
+            }
+        } else if ($_FILES["error"] != 0) {
+            echo "error avec téléchargement d'image";
+
+        } else {
+            echo "quel que fichers sont trop lourde";
+        }
+        //select camp where id_cpt= $idCpt
+        //PDO connection to the DB
+        $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+
+            $result = $conn->prepare($sql);
+            $result->bindValue('id_cpt', $idCpt);
+            $camp = $result->fetch(PDO::FETCH_ASSOC);
+
+            $nomCamp = $camp['camp_name'];
+            $idCamp = $camp['id_camp'];
+            $numMax = $camp['max_participants'];
+            $nombreInscrits = $camp['nombre_inscrits'];
+        } catch (PDOException $e) {
+            echo "Something went wrong while selectin a camp'.$e.'";
+        }
+
+        if ($numMax > $nombreInscrits) {
+
+        }
+        $conn = null;
         //PDO connection to the DB to insert the participants' information
         $sqlInsert = "INSERT INTO mm_stagiaire (
-            date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire, 
+            date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire,
             date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
             lien_consentement_photo, lien_securite_social,lien_mutuelle, lien_fiche_sanitaire, demande, lien_photo_passport)
         value= (:date_inscription,
@@ -137,29 +138,28 @@ else{
                :lien_fiche_sanitaire,
                :demande,
                :lien_photo_passport)";
-try {
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-    $smt= $conn->prepair($sqlInsert);
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+            $smt = $conn->prepair($sqlInsert);
 
-    $smt->bindValue(':date_inscription', $date_naissance);
-    $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
-    $smt->bindValue(':id_responsbal_legal', $idResponsableLegales, PDO::PARAM_INT);
-    $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-    $smt->bindValue(':prenom_stagiaire', $idResponsableLegales, PDO::PARAM_STR);
-    $smt->bindValue(':date_naissance', $date_naissance);
-    $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-    $smt->bindValue(':lien_cert_med_licence_FBB', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
-    $smt->bindValue(':lien_consentement_photo', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
-    $smt->bindValue(':lien_securite_social', $cheminDocSecuriteSocial, PDO::PARAM_STR);
-    $smt->bindValue(':lien_mutuelle', $cheminDocjustificatifMutuelle, PDO::PARAM_STR);
-    $smt ->bindValue(':lien_fiche_sanitaire', $ficheSanitaire, PDO::PARAM_STR);
+            $smt->bindValue(':date_inscription', $date_naissance);
+            $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
+            $smt->bindValue(':id_responsbal_legal', $idResponsableLegales, PDO::PARAM_INT);
+            $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
+            $smt->bindValue(':prenom_stagiaire', $idResponsableLegales, PDO::PARAM_STR);
+            $smt->bindValue(':date_naissance', $date_naissance);
+            $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
+            $smt->bindValue(':lien_cert_med_licence_FBB', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
+            $smt->bindValue(':lien_consentement_photo', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
+            $smt->bindValue(':lien_securite_social', $cheminDocSecuriteSocial, PDO::PARAM_STR);
+            $smt->bindValue(':lien_mutuelle', $cheminDocjustificatifMutuelle, PDO::PARAM_STR);
+            $smt->bindValue(':lien_fiche_sanitaire', $ficheSanitaire, PDO::PARAM_STR);
 
-    $smt->execute();
+            $smt->execute();
 
-} catch (PDOException $e) {
-    echo "insertion to the tabel mm_stagiaire failed '.$e.';";
-}
-
+        } catch (PDOException $e) {
+            echo "insertion to the tabel mm_stagiaire failed '.$e.';";
+        }
 
         //binding of data declaire some variables
         //close connection
@@ -281,11 +281,10 @@ try {
     <label for="demande">message *</label>
     <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
     </div>
-    <div class="col">';
-
-    if ($age_stagiare > 18) {
-        $content_inscription .=
-        '<h4> Info responsable legal</h4>
+    <div class="col">
+    <h4> Info responsable legal</h4>
+        <br>
+        <p> compléter cette partie saulment si vous êtes minore</p>
         <div class="row">
         <div class="col">
         <label for="nom_responsable_legal">Nom </label>
@@ -307,21 +306,18 @@ try {
         </div>
         </div>
         <label for="adresse_responsable_legal">Adresse </label>
-        <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">';
+        <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
 
-    } else {
-        $content_inscription .= '
-                    </div>
-                    </div>
-                    <br>
-                    <input type="submit" class="btn btn-primary" value="Soumtre" name = "btn_register_camp">
+        </div>
+        </div>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Soumtre" name = "btn_register_camp">
 
-                </form>
-            </div>
+        </form>
+        </div>
 
         </div>';
 
-    }
     return $content_inscription;
 }
 add_shortcode('kipdev_inscription', 'inscriptionCamp');
