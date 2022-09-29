@@ -68,9 +68,8 @@ function inscriptionCamp($id_cpt)
                 echo "problem encountered while connection to the DB:" . $e;
             }
             // the rest of the variables
-        
-        $sqlInsertStagiaire= "INSERT INTO mm_stagiaire (date_inscription, id_camp,id_responsable_legal, nom_stagiaire, prenom_stagiaire, adresse_stagiaire,
-        date_naissance, lien_
+
+
     }
     if (isset($_GET['id_stagiaire'])) {
         echo "you are now modifying the registration";
@@ -169,7 +168,7 @@ function inscriptionCamp($id_cpt)
     </div>
     <div class="col">
     <label for="mutuelle">Justificatif de mutuelle </label>
-    <input type="file" name=" mutuelle" class="form-control" accept=".pdf">
+    <input type="file" name="mutuelle" class="form-control" accept=".pdf">
     </div>
     <div class="col">
     <label for="fiche_sanitaire">Fiche sanitaire *</label>
