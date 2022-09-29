@@ -20,55 +20,50 @@ function inscriptionCamp($id_cpt)
     $idCpt = $postid = get_the_ID();
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
-    $permalien= get_permalink( $postid , $leavename= false );
+    $permalien = get_permalink($postid, $leavename = false);
 
-    echo $permalien. '<br>';
-
+    echo $permalien . '<br>';
 
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //create responsable legal
 
-            $nomResponsablelegal = $_POST['nom_responsable_legal'];
-            $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
-            $telResponsablelegal = $_POST['tel_responsable_legal'];
-            $emailResponsablelegal = $_POST['email_responsable_legal'];
-            $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
+        $nomResponsablelegal = $_POST['nom_responsable_legal'];
+        $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
+        $telResponsablelegal = $_POST['tel_responsable_legal'];
+        $emailResponsablelegal = $_POST['email_responsable_legal'];
+        $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
+        printr($_POST);
 
-
-            printr($_POST);
-
-
-            $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
+        $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
                                    VALUES (:nom_responsable_legal,
                                            :prenom_responsable_legal,
                                            :tel_responsable_legal,
                                            :email_responsable_legal,
                                            :adresse_responsable_legal)";
 
-            try {
-                $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $stmp = $conn->prepaired($sqlInsertRespLegal);
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmp = $conn->prepaired($sqlInsertRespLegal);
 
-                $stmp->bindValue('nom_responsable_legal', $nomResponsablelegal, PDO::PARAM_STR);
-                $stmp->bindValue('prenom_responsable_legal', $prenomResponsablelegal, PDO::PARAM_STR);
-                $stmp->bindValue('tel_responsable_legal', $telResponsablelegal, PDO::PARAM_STR);
-                $stmp->bindValue('email_responsable_legal', $emailResponsablelegal, PDO::PARAM_STR);
-                $stmp->bindValue('adresse_responsable_legal', $adresseResponsablelegal, PDO::PARAM_STR);
+            $stmp->bindValue('nom_responsable_legal', $nomResponsablelegal, PDO::PARAM_STR);
+            $stmp->bindValue('prenom_responsable_legal', $prenomResponsablelegal, PDO::PARAM_STR);
+            $stmp->bindValue('tel_responsable_legal', $telResponsablelegal, PDO::PARAM_STR);
+            $stmp->bindValue('email_responsable_legal', $emailResponsablelegal, PDO::PARAM_STR);
+            $stmp->bindValue('adresse_responsable_legal', $adresseResponsablelegal, PDO::PARAM_STR);
 
-                $stmp->execute();
+            $stmp->execute();
 
-                $idRespLegal = $conn->lastInsertId();
+            $idRespLegal = $conn->lastInsertId();
 
-                echo "<br>";
-                echo $id_cpt;
+            echo "<br>";
+            echo $id_cpt;
 
-            } catch (PDO $e) {
-                echo "problem encountered while connection to the DB:" . $e;
-            }
-            // the rest of the variables
-
+        } catch (PDO $e) {
+            echo "problem encountered while connection to the DB:" . $e;
+        }
+        // the rest of the variables
 
     }
     if (isset($_GET['id_stagiaire'])) {
@@ -130,13 +125,13 @@ function inscriptionCamp($id_cpt)
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
         $list = $conn->query($sqlSelectCamp);
-        if($list->rows) {
-        while (mysql_fetch_array($list)) {
+        if ($list->rows) {
+            while (mysql_fetch_array($list)) {
 
-            $content_inscription .= '<option value=' . $list['id_camp'] . '>' . $list['nom_camp'] . '</option>';
+                $content_inscription .= '<option value=' . $list['id_camp'] . '>' . $list['nom_camp'] . '</option>';
+            }
         }
-    }
-    echo "no camps to select";
+        echo "no camps to select";
 
     } catch (PDOException $e) {
         echo "Error while selecting all camps from the data base: '.$e.'";
