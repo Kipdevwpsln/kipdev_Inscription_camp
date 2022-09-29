@@ -30,6 +30,11 @@ function inscriptionCamp($id_cpt)
             $emailResponsablelegal = $_POST['email_responsable_legal'];
             $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
+            
+
+
+
+
             $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
                                    VALUES (:nom_responsable_legal,
                                            :prenom_responsable_legal,
