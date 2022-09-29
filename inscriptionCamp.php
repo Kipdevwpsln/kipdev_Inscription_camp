@@ -214,7 +214,7 @@ if (isset($_FILES) && $_FILES["error"] === 0) {
     <div class="container">
     <h3>inscription camp</h3>
     <div class="form_group">
-     <form action="/inscription_camp">
+     <form method = "post" action="/inscription_camp" action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data">
 
     <div class="row">
     <div class="col">
