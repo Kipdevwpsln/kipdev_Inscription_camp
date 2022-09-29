@@ -20,15 +20,22 @@ function inscriptionCamp($id_cpt)
     $idCpt = $postid = get_the_ID();
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
+    $permalien= get_permalink( $postid , $leavename= false );
 
-    if (isset($_POST) && isset($_POST['btn_register_camp'])) {
+    echo $permalien. '<br>';
+
+
+    if (($_POST) && isset($_POST['btn_register_camp'])) {
         //create responsable legal
-        if (isset($_POST['nom_responsable_legal'])) {
+
             $nomResponsablelegal = $_POST['nom_responsable_legal'];
             $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
             $telResponsablelegal = $_POST['tel_responsable_legal'];
             $emailResponsablelegal = $_POST['email_responsable_legal'];
             $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
+
+            printr($_POST);
+
 
             $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
                                    VALUES (:nom_responsable_legal,
@@ -48,23 +55,27 @@ function inscriptionCamp($id_cpt)
                 $stmp->bindValue('adresse_responsable_legal', $adresseResponsablelegal, PDO::PARAM_STR);
 
                 $idRespLegal = $conn->lastInsertId();
-                
+
+                echo "<br>";
+                echo $id_cpt;
+
             } catch (PDO $e) {
                 echo "problem encountered while connection to the DB:" . $e;
             }
 
-        }
-        if (isset($_GET['id_stagiaire'])) {
-            //modification
 
-        }
     }
+    if (isset($_GET['id_stagiaire'])) {
+        echo "you are now modifying the registration";
+
+    }
+
     $content_inscription = '
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <div class="container">
     <h3>inscription camp</h3>
     <div class="form_group">
-     <form action="/inscription_camp">
+     <form action="'.$permalien.'">
 
     <div class="row">
     <div class="col">
@@ -105,7 +116,7 @@ function inscriptionCamp($id_cpt)
                     <div class="col">
                         <label for="camp_selectionne">Sélectionnez votre camp *</label>
                         <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
-                        <option selected>' . $nomCamp . '</option>';
+                        <option selected> nom camp </option>';
 
     //seelect all the camps partcipants can register
     //the camps that has status "publié"
@@ -113,10 +124,13 @@ function inscriptionCamp($id_cpt)
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
         $list = $conn->query($sqlSelectCamp);
+        if($list->rows) {
         while (mysql_fetch_array($list)) {
 
             $content_inscription .= '<option value=' . $list['id_camp'] . '>' . $list['nom_camp'] . '</option>';
         }
+    }
+    echo "no camps to select";
 
     } catch (PDOException $e) {
         echo "Error while selecting all camps from the data base: '.$e.'";
