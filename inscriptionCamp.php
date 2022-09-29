@@ -25,7 +25,7 @@ function inscriptionCamp($id_cpt)
     echo $permalien. '<br>';
 
 
-    if (($_POST) && isset($_POST['btn_register_camp'])) {
+    if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //create responsable legal
 
             $nomResponsablelegal = $_POST['nom_responsable_legal'];
@@ -75,7 +75,7 @@ function inscriptionCamp($id_cpt)
     <div class="container">
     <h3>inscription camp</h3>
     <div class="form_group">
-     <form action="'.$permalien.'">
+     <form action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data>
 
     <div class="row">
     <div class="col">
