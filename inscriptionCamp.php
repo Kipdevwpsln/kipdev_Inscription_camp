@@ -34,6 +34,8 @@ function inscriptionCamp($id_cpt)
             $emailResponsablelegal = $_POST['email_responsable_legal'];
             $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
+            
+
             printr($_POST);
 
 
@@ -75,7 +77,7 @@ function inscriptionCamp($id_cpt)
     <div class="container">
     <h3>inscription camp</h3>
     <div class="form_group">
-     <form action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data>
+     <form method = "post" action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data">
 
     <div class="row">
     <div class="col">
