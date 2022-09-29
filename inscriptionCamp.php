@@ -34,7 +34,7 @@ function inscriptionCamp($id_cpt)
             $emailResponsablelegal = $_POST['email_responsable_legal'];
             $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
 
-            
+
 
             printr($_POST);
 
@@ -48,6 +48,7 @@ function inscriptionCamp($id_cpt)
 
             try {
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmp = $conn->prepaired($sqlInsertRespLegal);
 
                 $stmp->bindValue('nom_responsable_legal', $nomResponsablelegal, PDO::PARAM_STR);
@@ -55,6 +56,8 @@ function inscriptionCamp($id_cpt)
                 $stmp->bindValue('tel_responsable_legal', $telResponsablelegal, PDO::PARAM_STR);
                 $stmp->bindValue('email_responsable_legal', $emailResponsablelegal, PDO::PARAM_STR);
                 $stmp->bindValue('adresse_responsable_legal', $adresseResponsablelegal, PDO::PARAM_STR);
+
+                $stmp->execute();
 
                 $idRespLegal = $conn->lastInsertId();
 
@@ -64,6 +67,7 @@ function inscriptionCamp($id_cpt)
             } catch (PDO $e) {
                 echo "problem encountered while connection to the DB:" . $e;
             }
+            // the rest of the variables
 
 
     }
