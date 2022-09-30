@@ -12,7 +12,8 @@
  * Update URI:        https://example.com/my-plugin/
  * Text Domain:       do not install bfore contacting the auther
  * Domain Path:       /languages
- */
+ **/
+
 function inscriptionCamp($id_cpt)
 {
     //les variable
@@ -22,6 +23,7 @@ function inscriptionCamp($id_cpt)
     $categorie = get_the_category($post->ID);
     var_dump($categorie);
 
+    //when the button btn_register_camp is clicked and there is something in POST
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //id responsable legal
 
@@ -39,6 +41,8 @@ function inscriptionCamp($id_cpt)
         $telResponsablelegal = $_POST['tel_responsable_legal'];
         $emailResponsablelegal = $_POST['email_responsable_legal'];
         $adresseResponsablelegal = $_POST['adresse_responsable_legal'];
+
+        //mise à jour de responsable legal
 
         $sqlInsertRespLegal = "INSERT INTO mm_responsable_legal (nom_responsable_legal, prenom_responsable_legal, tel_responsable_legal, email_responsable_legal, adresse_responsable_legal)
         VALUES (:nom_responsable_legal,
@@ -61,14 +65,10 @@ function inscriptionCamp($id_cpt)
             $stmp->execute();
 
             $idRespLegal = $conn->lastInsertId();
-
-        } catch (PDO $e) {
-            echo "problem encountered while connection to the DB:" . $e;
+        } catch (PDOException $e) {
+            echo "error while inserting into responsable legal" . $e;
         }
-        //other variables
-        $ageStagiaire = $_POST['age_stagiaire'];
 
-        //treatment images
         if (isset($_FILES) && $_FILES["error"] === 0) {
 
             $autorisationPhoto = $_FILES['autorisation_photo'];
@@ -77,6 +77,7 @@ function inscriptionCamp($id_cpt)
             $ficheSanitaire = $_FILES['fiche_sanitaire'];
             $justificatifmutuelle = $_FILES['mutuelle'];
 
+            //nested condition check if the doc type is pdf
             //Si le fichier n'est pas trop volumineux(1Mo accepté)
             if ($autorisationPhoto['size'] <= (1000000) &&
                 ($certMedeffbb['size'] <= (1000000)) &&
@@ -90,7 +91,6 @@ function inscriptionCamp($id_cpt)
                 //strtolower pour être sûr que l'extension est en minuscules
                 $extension = strtolower(pathinfo($autorisationPhoto["name"], PATHINFO_EXTENSION));
 
-                //Si l'extension/MIME ok
                 if (array_key_exists($extension, $extensionAutorisees)
                     && in_array($autorisationPhoto["type"], $extensionAutorisees)
                     && in_array($certMedeffbb["type"], $extensionAutorisees)
@@ -113,20 +113,22 @@ function inscriptionCamp($id_cpt)
 
                     move_uploaded_file($justificatifmutuelle["tmp_name"], './wp-content/uploads/camps/images/' . basename($justificatifmutuelle["name"]));
                     $cheminDocjustificatifMutuelle = 'https://magalimendy.fr//wp-content/uploads/camps/images/' . $justificatifmutuelle["name"] . '';
+                } else {
+                    echo "extention not autirised";
                 }
-                else{
-                    echo "extention not autirised"; 
-                }
-            
-            } else  ($_FILES["error"] != 0) {
-            echo "error avec téléchargement d'image";
-             }
-        
+            }
+            else { 
+                echo "some or one of the files uploaded are too heavy";
+            }
 
-            //select camp where id_cpt= $idCpt
-            //PDO connection to the DB
-            $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
-            try {
+        }
+        else {
+            echo "there was an error uploading the documents";
+        }
+         //select camp where id_cpt= $idCpt
+        //PDO connection to the DB
+        $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
+        try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
 
             $result = $conn->prepare($sql);
@@ -137,13 +139,13 @@ function inscriptionCamp($id_cpt)
             $idCamp = $camp['id_camp'];
             $numMax = $camp['max_participants'];
             $nombreInscrits = $camp['nombre_inscrits'];
-         } catch (PDOException $e) {
+        } catch (PDOException $e) {
             echo "Something went wrong while selectin a camp'.$e.'";
-            }
+        }
 
-            $conn = null;
-            //PDO connection to the DB to insert the participants' information
-             if ($numMax > $nombreInscrits) {
+        $conn = null;
+
+        if ($numMax > $nombreInscrits) {
             $sqlInsert = "INSERT INTO mm_stagiaire (
             date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire,
             date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
@@ -188,91 +190,80 @@ function inscriptionCamp($id_cpt)
             }
         } else {
             //complete
-            echo "there is slots available for this camp";
+            echo "no more slots available for this camp";
         }
-
-        //binding of data declaire some variables
-        //close connection
-
-        //get user data
-        ///nom....prenom....Date_naisance
-
-        //PDO connection_aborted//
-        //Insert data into the data base
-        //table responsable
-        //get(lastInserted) for responsable legaga
-
-        //insert into the next table stagiaires
-
-        //calculating the age
         $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('y-m-d')));
     }
 
     $content_inscription = '
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-        <div class="container">
-        <h3>inscription camp</h3>
-        <div class="form_group">
-        <form method = "post" action="/inscription_camp" action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <div class="container">
+    <h3>inscription camp</h3>
+    <div class="form_group">
+    <form method = "post" action="/inscription_camp" action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data">
 
-        <div class="row">
-        <div class="col">
-        <label for="nom_stagiaire">Votre NOM *</label>
-        <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
-        </div>
-        <div class="col">
-        <label for="prenom_stagiaire">Votre Prenom*</label>
-        <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
-        </div>
-        </div>
-        <br>
+    <div class="row">
+    <div class="col">
+    <label for="nom_stagiaire">Votre NOM *</label>
+    <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+    </div>
+    <div class="col">
+    <label for="prenom_stagiaire">Votre Prenom*</label>
+    <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+    </div>
+    </div>
+    <br>
 
-        <div class="row">
-        <div class="col">
-        <label for="adresse_stagiaire">Votre adresse *</label>
-         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
-        </div>
-        <div class="col">
-        <label for="tailles_selectionne">tailles de vêtements  *</label>
-        <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-        <option selected>' . $taillesSelectioner . '</option>
-        <option value="xs">xs</option>
-        <option value="s">s</option>
-        <option value="m">m</option>
-        <option value="l">l</option>
-        <option value="xl">xl</option>
-        </select>
-        </div>
-        </div>
+    <div class="row">
+    <div class="col">
+    <label for="adresse_stagiaire">Votre adresse *</label>
+     <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
+    </div>
+    <div class="col">
+    <label for="tailles_selectionne">tailles de vêtements  *</label>
+    <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
+    <option selected>' . $taillesSelectioner . '</option>
+    <option value="xs">xs</option>
+    <option value="s">s</option>
+    <option value="m">m</option>
+    <option value="l">l</option>
+    <option value="xl">xl</option>
+    </select>
+    </div>
+    </div>
 
-        <br>
-        <div class="row">
-        <div class="col">
-        <label for="date_naissance">Date de naissance *</label>
-        <input type="date" name="date_naissance" class="form-control" required="required" value=" ' . $dateNaissance . '">
-        </div>
-        <div class="col">
-        <label for="camp_selectionne">Sélectionnez votre camp *</label>
-        <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
-        <option selected>' . $nomCamp . '</option>';
+    <br>
+    <div class="row">
+    <div class="col">
+    <label for="date_naissance">Date de naissance *</label>
+    <input type="date" name="date_naissance" class="form-control" required="required" value=" ' . $dateNaissance . '">
+    </div>
+    <div class="col">
+    <label for="camp_selectionne">Sélectionnez votre camp *</label>
+    <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
+    <option selected>' . $nomCamp . '</option>';
 
     //seelect all the camps partcipants can register
     //the camps that has status "publié"
     $sqlSelectCamp = "SELECT * FROM mm_camp WHERE 'date_debut'> date(d-m-y) and 'statut' = 'publié'";
+    global $wpdb;
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-        $list = $conn->query($sqlSelectCamp);
-        while (mysql_fetch_array($list)) {
-
-            $content_inscription .= '<option value=' . $list['id_camp'] . '>' . $list['nom_camp'] . '</option>';
+        $results = $wpdb->query($sqlSelectCamp);
+        //debugging
+        var_dump($results);
+        foreach ($results as $row) {
+            $camp = $row["nom_camp"];
+            $content_inscription .= '<option value=' . $camp['id_camp'] . '>' . $camp['nom_camp'] . '</option>';
         }
+        $content_inscription .= '</select>';
 
     } catch (PDOException $e) {
         echo "Error while selecting all camps from the data base: '.$e.'";
     }
 
     $content_inscription .= '
-     </select>
+    </select>
     </div>
     </div>
     <br>
@@ -312,40 +303,40 @@ function inscriptionCamp($id_cpt)
     </div>
     <div class="col">
     <h4> Info responsable legal</h4>
-        <br>
-        <p> compléter cette partie saulment si vous êtes minore</p>
-        <div class="row">
-        <div class="col">
-        <label for="nom_responsable_legal">Nom </label>
-        <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
-        </div>
-        <div class="col">
-        <label for="prenom_responsable_legal">prénom </label>
-        <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
-        </div>
-        </div>
-        <div class="row">
-        <div class="col">
-        <label for="nom_responsable_legal">Numéro tel</label>
-        <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
-        </div>
-        <div class="col">
-        <label for="prenom_responsable_legal">E-mail </label>
-        <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
-        </div>
-        </div>
-        <label for="adresse_responsable_legal">Adresse </label>
-        <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <br>
+    <p> compléter cette partie saulment si vous êtes minore</p>
+    <div class="row">
+    <div class="col">
+    <label for="nom_responsable_legal">Nom </label>
+    <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    </div>
+    <div class="col">
+    <label for="prenom_responsable_legal">prénom </label>
+    <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+    <label for="nom_responsable_legal">Numéro tel</label>
+    <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    </div>
+    <div class="col">
+    <label for="prenom_responsable_legal">E-mail </label>
+    <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    </div>
+    </div>
+    <label for="adresse_responsable_legal">Adresse </label>
+    <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
 
-        </div>
-        </div>
-        <br>
-        <input type="submit" class="btn btn-primary" value="Soumtre" name = "btn_register_camp">
+    </div>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Soumtre" name = "btn_register_camp">
 
-        </form>
-        </div>
+    </form>
+    </div>
 
-        </div>';
+    </div>';
 
     return $content_inscription;
 }
