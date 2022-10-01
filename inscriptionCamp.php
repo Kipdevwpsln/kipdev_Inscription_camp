@@ -193,6 +193,25 @@ function inscriptionCamp($id_cpt)
             echo "no more slots available for this camp";
         }
         $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('y-m-d')));
+
+        //update the number of subscribers in the camp
+        $sql= "UPDATE mm_camp WHERE camp_id = :camp_id(nombre_inscrits)
+        VALUES (:nombre_inscrits)";
+
+        $nombreInscrits= $nombreInscrits++;
+
+         echo $nombreInscrits;
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $smt = $conn->prepair($sql);
+                $stmp->bindValue('id_camp', $id_Camp, PDO::PARAM_INT);
+                $stmp->bindValue('nombre_inscrits', $nombreInscrits);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     $content_inscription = '
