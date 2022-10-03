@@ -14,14 +14,29 @@
  * Domain Path:       /languages
  **/
 
-function inscriptionCamp($id_cpt)
+function inscriptionCamp($idCpt)
 {
     //les variable
     global $post;
     $age_stagiare = '';
-    $idCpt = get_the_ID();
-    $categorie = get_the_category($post->ID);
+    $idCpt = get_queried_object_id();
+    $categorie = get_the_category($idCpt->ID);
     var_dump($categorie);
+    var_dump($idCpt);
+    print_r($idCpt);
+
+    $nomStagiaire = '';
+    $prenomStagiaire = '';
+    $taillesSelectioner = '';
+    $dateNaissance = '';
+    $nomCamp = '';
+    $prenomResponsablelegal = '';
+    $telResponsablelegal = '';
+    $nomResponsablelegal = '';
+    $emailResponsablelegal = '';
+    $adresseResponsablelegal = '';
+    $adresseStagiaire = '';
+    $lienPhotoPassport = '';
 
     //when the button btn_register_camp is clicked and there is something in POST
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
@@ -29,11 +44,11 @@ function inscriptionCamp($id_cpt)
 
         // Recover variables from table
         $nomStagiaire = $_POST['nom_stagiaire'];
-        $PrenStagiaire = $_POST['Prenom_stagiaire'];
+        $PrenomStagiaire = $_POST['Prenom_stagiaire'];
         $adresseStagiaire = $_POST['adresse_stagiaire'];
         $taillesSelectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
-        $campSelectioner = $_POST['camp_selectioner'];
+        $idCamp = $_POST['camp_selectioner'];
         $demande = $_POST['demande'];
 
         $nomResponsablelegal = $_POST['nom_responsable_legal'];
@@ -54,7 +69,7 @@ function inscriptionCamp($id_cpt)
         try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmp = $conn->prepaired($sqlInsertRespLegal);
+            $stmp = $conn->prepare($sqlInsertRespLegal);
 
             $stmp->bindValue('nom_responsable_legal', $nomResponsablelegal, PDO::PARAM_STR);
             $stmp->bindValue('prenom_responsable_legal', $prenomResponsablelegal, PDO::PARAM_STR);
@@ -69,7 +84,11 @@ function inscriptionCamp($id_cpt)
             echo "error while inserting into responsable legal" . $e;
         }
 
-        if (isset($_FILES) && $_FILES["error"] === 0) {
+        if (isset($_FILES) && $_FILES['autorisation_photo']["error"] === 0
+                           && $_FILES['cert_mede_ffbb']["error"] === 0
+                           && $_FILES['securite_social']["error"] === 0
+                           && $_FILES['autorisation_photo']["error"] === 0
+                           && $_FILES['mutuelle']["error"] === 0) {
 
             $autorisationPhoto = $_FILES['autorisation_photo'];
             $certMedeffbb = $_FILES['cert_mede_ffbb'];
@@ -116,31 +135,32 @@ function inscriptionCamp($id_cpt)
                 } else {
                     echo "extention not autirised";
                 }
-            }
-            else { 
+            } else {
                 echo "some or one of the files uploaded are too heavy";
             }
 
-        }
-        else {
+        } else {
             echo "there was an error uploading the documents";
         }
-         //select camp where id_cpt= $idCpt
+        //select camp where id_cpt= $idCpt
         //PDO connection to the DB
-        $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
+        $sql = "SELECT  * FROM mm_camp WHERE id_camp= :id_camp";
         try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $result = $conn->prepare($sql);
-            $result->bindValue('id_cpt', $idCpt);
-            $camp = $result->fetch(PDO::FETCH_ASSOC);
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['id_camp' => $idCamp]);
+            $camp = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $nomCamp = $camp['camp_name'];
-            $idCamp = $camp['id_camp'];
-            $numMax = $camp['max_participants'];
-            $nombreInscrits = $camp['nombre_inscrits'];
+                $nomCamp = $camp['nom_camp'];
+                $idCamp = $camp['id_camp'];
+                $numMax = $camp['max_participants'];
+                $nombreInscrits = $camp['nombre_inscrits'];
+
+                var_dump($camp);
         } catch (PDOException $e) {
-            echo "Something went wrong while selectin a camp'.$e.'";
+            echo "Something went wrong while selecting a camp'.$e.'";
         }
 
         $conn = null;
@@ -149,32 +169,35 @@ function inscriptionCamp($id_cpt)
             $sqlInsert = "INSERT INTO mm_stagiaire (
             date_inscription, id_camp, id_responsbal_legal, nom_stagiaire, prenom_stagiaire,
             date_naissance, adresse_stagiaire, lien_cert_med_licence_FBB, lien_justification_qf,
-            lien_consentement_photo, lien_securite_social,lien_mutuelle, lien_fiche_sanitaire, demande)
-             value= (:date_inscription,
+            lien_consentement_photo, lien_securite_social, lien_mutuelle, lien_fiche_sanitaire, demande, lien_photo_passport, tailles_vêtment)
+             value= (
+               :date_inscription,
                :id_camp,
                :id_responsbal_legal,
                :nom_stagiaire,
                :prenom_stagiaire,
-               :date_naissance,
                :adresse_stagiaire,
+               :date_naissance,
                :lien_cert_med_licence_FBB,
                :lien_justification_qf,
                :lien_consentement_photo,
                :lien_securite_social,
                :lien_mutuelle,
                :lien_fiche_sanitaire,
-               :demande)";
+               :demande
+               :lien_photo_passport,
+               :tailles_vêtment)";
             try {
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $smt = $conn->prepair($sqlInsert);
+                $smt = $conn->prepare($sqlInsert);
 
                 $smt->bindValue(':date_inscription', date("Y-m-d"));
-                $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
+                $smt->bindValue(':id_camp', $idCamp, PDO::PARAM_INT);
                 $smt->bindValue(':id_responsable', $idRespLegal, PDO::PARAM_INT);
-                $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':prenom_stagiaire', $Prenomstagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':date_naissance', $date_naissance);
+                $smt->bindValue(':id_responsbal_legal', $nomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':prenom_stagiaire', $PrenomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':date_naissance', $dateNaissance);
                 $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
                 $smt->bindValue(':lien_cert_med_licence_FBB', $cheminCertMedeffbb, PDO::PARAM_STR);
                 $smt->bindValue(':lien_consentement_photo', $cheminDocAautorisationPhoto, PDO::PARAM_STR);
@@ -182,6 +205,9 @@ function inscriptionCamp($id_cpt)
                 $smt->bindValue(':lien_mutuelle', $cheminDocjustificatifMutuelle, PDO::PARAM_STR);
                 $smt->bindValue(':lien_fiche_sanitaire', $cheminFicheSanitaire, PDO::PARAM_STR);
                 $smt->bindValue('demande', $demande, PDO::PARAM_STR);
+                $smt->bindValue('lien_photo_passport', $lienPhotoPassport, PDO::PARAM_STR);
+                $smt->bindValue('tailles_vêtment', $taillesSelectioner, PDO::PARAM_STR);
+
 
                 $smt->execute();
 
@@ -192,24 +218,24 @@ function inscriptionCamp($id_cpt)
             //complete
             echo "no more slots available for this camp";
         }
-        $ageStagiaire = date_diff(date_create($dateNaissance), date_create($date('y-m-d')));
 
         //update the number of subscribers in the camp
-        $sql= "UPDATE mm_camp WHERE camp_id = :camp_id(nombre_inscrits)
-        VALUES (:nombre_inscrits)";
+        $sql = "UPDATE mm_camp
+        SET `nombre_inscrits` = nombre_inscrits
+        WHERE id_camp = :id_camp";
 
-        $nombreInscrits= $nombreInscrits++;
+        $nombreInscrits = $nombreInscrits + 1;
 
-         echo $nombreInscrits;
+        echo $nombreInscrits;
         try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $smt = $conn->prepair($sql);
-                $stmp->bindValue('id_camp', $id_Camp, PDO::PARAM_INT);
-                $stmp->bindValue('nombre_inscrits', $nombreInscrits);
+            $smt = $conn->prepair($sql);
+            $stmp->bindValue('id_camp', $idCamp, PDO::PARAM_INT);
+            $stmp->bindValue('nombre_inscrits', $nombreInscrits);
 
-        } catch (\Throwable $th) {
+        } catch (\Throwable$th) {
             //throw $th;
         }
     }
@@ -224,11 +250,11 @@ function inscriptionCamp($id_cpt)
     <div class="row">
     <div class="col">
     <label for="nom_stagiaire">Votre NOM *</label>
-    <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+    <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomStagiaire . '">
     </div>
     <div class="col">
     <label for="prenom_stagiaire">Votre Prenom*</label>
-    <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+    <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $prenomStagiaire . '">
     </div>
     </div>
     <br>
@@ -260,25 +286,32 @@ function inscriptionCamp($id_cpt)
     <div class="col">
     <label for="camp_selectionne">Sélectionnez votre camp *</label>
     <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
-    <option selected>' . $nomCamp . '</option>';
+    <option value ' . $idCamp . ' selected  >' . $nomCamp . '</option>';
 
     //seelect all the camps partcipants can register
     //the camps that has status "publié"
-    $sqlSelectCamp = "SELECT * FROM mm_camp WHERE 'date_debut'> date(d-m-y) and 'statut' = 'publié'";
+
+    $sqlSelectCamp = "SELECT * FROM mm_camp WHERE 'status' = 'publié' and 'date-debut'> CURRDATE()";
     global $wpdb;
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-        $results = $wpdb->query($sqlSelectCamp);
-        //debugging
-        var_dump($results);
-        foreach ($results as $row) {
-            $camp = $row["nom_camp"];
-            $content_inscription .= '<option value=' . $camp['id_camp'] . '>' . $camp['nom_camp'] . '</option>';
-        }
-        $content_inscription .= '</select>';
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $resultat = $conn->query($sqlSelectCamp);
+        var_dump($resultat);
+        //si il y a plus que Zéro ligne dans resultat
+        if ($resultat) {
+            while ($row = $resultat->fetch()) {
+                $thisCamp = $row['nom_camp'];
+                $thisCampId = $row['id_camp'];
+
+                $content_inscription .= '<option value="' . $thisCampId . '">' . $thisCamp . '</ option>';
+            }
+            $content_inscription .= '</select>';
+
+        }
     } catch (PDOException $e) {
-        echo "Error while selecting all camps from the data base: '.$e.'";
+        echo "error while selecting camps to a drop down menu '.$e.'";
     }
 
     $content_inscription .= '
@@ -287,6 +320,9 @@ function inscriptionCamp($id_cpt)
     </div>
     <br>
     <h4>Télécharger les documents</h4>
+    <br>
+    <p> Les document type peut être télécharger <a href="https://www.magalimendy.fr/les-document-et-exemplaire/">ICI</a></p>
+    <br>
     <p>! seuls les documents de type PDF sont acceptés</p>
     <br>
     <div class="row">
@@ -321,31 +357,32 @@ function inscriptionCamp($id_cpt)
     <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
     </div>
     <div class="col">
+
     <h4> Info responsable legal</h4>
     <br>
-    <p> compléter cette partie saulment si vous êtes minore</p>
+    <p> compléter cette partie saulment si vous êtes mineur.e</p>
     <div class="row">
     <div class="col">
     <label for="nom_responsable_legal">Nom </label>
-    <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $nomResponsablelegal . '">
     </div>
     <div class="col">
     <label for="prenom_responsable_legal">prénom </label>
-    <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $prenomResponsablelegal . '">
     </div>
     </div>
     <div class="row">
     <div class="col">
-    <label for="nom_responsable_legal">Numéro tel</label>
-    <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <label for="tel_responsable_legal">Numéro tel</label>
+    <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $telResponsablelegal . '">
     </div>
     <div class="col">
-    <label for="prenom_responsable_legal">E-mail </label>
-    <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <label for="email_responsable_legal">E-mail </label>
+    <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $emailResponsablelegal . '">
     </div>
     </div>
     <label for="adresse_responsable_legal">Adresse </label>
-    <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+    <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $adresseResponsablelegal . '">
 
     </div>
     </div>
