@@ -74,6 +74,8 @@ function inscriptionCamp($id_cpt)
 
         //treatment images
         if(isset ($_FILES)){
+            $docCertMedLicence= $_FILES['cert_mede_ffbb'];
+
             $nameCertMedLicence = $_FILES['cert_mede_ffbb']['name'];
             $nameAutorisationPhoto = $_FILES['autorisation_photo']['name'];
             $nameSecuritéSocial = $_FILES['securite_social']['name'];
@@ -82,7 +84,7 @@ function inscriptionCamp($id_cpt)
             
 
             //traitement de cert medical ou licence ffb
-            if($_FILES['cert_mede_ffbb']['error'] ==0){
+            if($_FILES['cert_mede_ffbb']['error'] =0){
                 $destination = '/wp-content/uploads/camps/docs/' .$nameCertMedLicence;
                 $tmpName = $docCertMedLicence['tmp_name'];
                 $sizeDoc= $docCertMedLicence['size'];
@@ -92,7 +94,7 @@ function inscriptionCamp($id_cpt)
                 if($sizeDoc > 1000000){
                     if(in_array($extention,['pdf','PDF'])){
                         if(move_uploaded_file($tmpName,$destination)){
-                            $urlCertmedeffbb="/wp-content/uploads/camps/docs/". basename($nameCertMedLicence);
+                            $urlCertmedeffbb="/wp-content/uploads/camps/docs/".$nameCertMedLicence;
                         }
                         echo "problem while moving uploaded file to destination";
                     }
@@ -100,6 +102,7 @@ function inscriptionCamp($id_cpt)
                 }
                 echo " votre certificat médical ou de votre licence ffbb est trop lourd";
             }
+            var_dump($docCertMedLicence);
             echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
          }
             //select camp where id_cpt= $idCpt
