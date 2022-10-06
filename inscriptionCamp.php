@@ -75,8 +75,10 @@ function inscriptionCamp($id_cpt)
         //treatment images
         if(isset ($_FILES)){
             $docCertMedLicence= $_FILES['cert_mede_ffbb'];
+            var_dump($docCertMedLicence);
 
-            $nameCertMedLicence = $_FILES['cert_mede_ffbb']['name'];
+            $nameCertMedLicence = $docCertMedLicence['name'];
+
             $nameAutorisationPhoto = $_FILES['autorisation_photo']['name'];
             $nameSecuritéSocial = $_FILES['securite_social']['name'];
             $nameFicheSanitaire = $_FILES['fiche_sanitaire'];
@@ -84,26 +86,36 @@ function inscriptionCamp($id_cpt)
             
 
             //traitement de cert medical ou licence ffb
-            if($_FILES['cert_mede_ffbb']['error'] =0){
-                $destination = '/wp-content/uploads/camps/docs/' .$nameCertMedLicence;
+            if ($docCertMedLicence['error'] === UPLOAD_ERR_OK){
+                $destination = './wp-content/uploads/camps/docs/' .$nameCertMedLicence;
                 $tmpName = $docCertMedLicence['tmp_name'];
                 $sizeDoc= $docCertMedLicence['size'];
+
+                print_r("the size is: " . $sizeDoc . "\n");
+                print_r("the temp name is: " . $tmpName . "\n");
                 
                 $extention= pathinfo($nameCertMedLicence, PATHINFO_EXTENSION);
 
-                if($sizeDoc > 1000000){
+                if($sizeDoc < 1000000){
                     if(in_array($extention,['pdf','PDF'])){
                         if(move_uploaded_file($tmpName,$destination)){
-                            $urlCertmedeffbb="/wp-content/uploads/camps/docs/".$nameCertMedLicence;
-                        }
+                            $urlCertmedeffbb= "";                        }
+                        else{
                         echo "problem while moving uploaded file to destination";
+                        }
                     }
+                    else{
                     echo "que les document de type pdf sont accepter";
+                    }
                 }
+                else{
                 echo " votre certificat médical ou de votre licence ffbb est trop lourd";
+                }
             }
+            else{
             var_dump($docCertMedLicence);
             echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
+            }
          }
             //select camp where id_cpt= $idCpt
             //PDO connection to the DB
