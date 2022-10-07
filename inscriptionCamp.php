@@ -200,6 +200,33 @@ function inscriptionCamp($id_cpt)
             else {
                 echo " there was an error uploading justification mutual";
             }
+            //treatment of of fiche sanitaire
+            if ($docFicheSanitaire ['error'] === UPLOAD_ERR_OK) {
+                if ($docFicheSanitaire ['size'] === 0 <= 1000000) {
+                    $extention =pathinfo($nameFicheSanitaire, PATHINFO_EXTENSION);
+                    $tempName = $nameFicheSanitaire['tmp_name'];
+                    $destination = "./wp-content/uploads/camps/docs/" . $nameFicheSanitaire;
+
+                    if(in_array($extention, array('pdf', 'PDF'))){
+                        if(move_uploaded_file($tempName, $destination)){
+                            $urlficheSanitaire = "./wp-content/uploads/camps/docs/" .$nameFicheSanitaire;
+
+                        }
+                        else{
+                            echo "error moving fiche_sanitaire to the destination";
+                        }
+
+                    }
+                    else{
+                        echo "file extension is not supported";
+                    }
+
+        }
+        else{
+            echo "the file fiche sanitaire is too large";
+        }
+        else {
+            echo " there was an error uploading fiche sanitaire to the server";
         }
         //check if the selected camp is available
         //PDO connection to the DB
