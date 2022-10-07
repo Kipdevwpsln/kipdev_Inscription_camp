@@ -224,9 +224,11 @@ function inscriptionCamp($id_cpt)
         else{
             echo "the file fiche sanitaire is too large";
         }
-        else {
-            echo " there was an error uploading fiche sanitaire to the server";
-        }
+    }
+    else {
+        echo " there was an error uploading fiche sanitaire to the server";
+    }
+}
         //check if the selected camp is available
         //PDO connection to the DB
         $sql = "SELECT * FROM mm_camp
