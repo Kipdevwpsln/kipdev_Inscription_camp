@@ -140,6 +140,10 @@ function inscriptionCamp($id_cpt)
                             $urlAutorisationPhoto= './wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
                             echo $urlAutorisationPhoto;
                         }
+                        else{
+                            echo "moving failed";
+                        }
+                    }
                     else{
                         echo $extention . " format is not allowed. please upload a file with pdf extension for autorisation_photo";
                     }
@@ -148,29 +152,10 @@ function inscriptionCamp($id_cpt)
                 else{
                     echo "the uploaded file autorisation_photo is too large. please try compressing";
             }
-        }
+
             else{
                 echo "there was an error uploading the autorisation_photo file to the server";
             }
-
-            //treatment of securite_social
-            if($docSecuriteSocial ['error'] === UPLOAD_ERR_OK){
-                if($docSecuriteSocial ['size'] <= 1000000){
-                    $extention= pathinfo($nameSecuriteSocial, PATHINFO_EXTENSION);
-                    if(in_array($extention, array('pdf', 'PDF');
-                    $destination= "./wp-content/uploads/camps/docs/" .$nameSecuriteSocial;
-                    if (move_uploaded_file($tempName, $destination)){
-                        $urlSecuriteSocial = "./wp-content/uploads/camps/docs/" .$nameSecuriteSocial;
-                    }
-                    else{
-                        echo "there was an error while moving securite_social into the destination folder.";                  }
-                }
-                else{
-                    echo " the file securite_social uploaded is too large";
-                }
-         }
-         else{
-            echo "there was an error while uploading securite_social file to the server";
          }
             //check if the selected camp is available
             //PDO connection to the DB
