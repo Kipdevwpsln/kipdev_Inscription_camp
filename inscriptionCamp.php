@@ -220,7 +220,6 @@ function inscriptionCamp($id_cpt)
                     else{
                         echo "file extension is not supported";
                     }
-
         }
         else{
             echo "the file fiche sanitaire is too large";
