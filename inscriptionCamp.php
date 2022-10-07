@@ -40,10 +40,9 @@ function inscriptionCamp($id_cpt)
         $telStagiaire = $_POST['tel_stagiaire'];
 
         //today
-       
-        $today= date("Y-m-d");
-        echo $today;
 
+        $today = date("Y-m-d");
+        echo $today;
 
         echo ("the selected campis of id: " . $idCamp);
 
@@ -83,8 +82,8 @@ function inscriptionCamp($id_cpt)
         //other variables
 
         //treatment images
-        if(isset ($_FILES)){
-            $docCertMedLicence= $_FILES['cert_mede_ffbb'];
+        if (isset($_FILES)) {
+            $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
 
             $docSecuriteSocial = $_FILES['securite_social'];
@@ -92,113 +91,108 @@ function inscriptionCamp($id_cpt)
             $docFicheSanitaire = $_FILES['fiche_sanitaire'];
 
             //names
-            $nameCertMedLicence= $_FILES['cert_mede_ffbb']['name'];
+            $nameCertMedLicence = $_FILES['cert_mede_ffbb']['name'];
             $nameAutorisationPhoto = $_FILES['autorisation_photo']['name'];
             $nameSecuriteSocial = $_FILES['securite_social']['name'];
             $nameMutuelle = $_FILES['mutuelle']['name'];
             $nameFicheSanitaire = $_FILES['fiche_sanitaire']['name'];
 
-            
             //traitement de cert medical ou licence ffb
-            if ($docCertMedLicence['error'] === UPLOAD_ERR_OK){
-                $destination = './wp-content/uploads/camps/docs/' .$nameCertMedLicence;
+            if ($docCertMedLicence['error'] === UPLOAD_ERR_OK) {
+                $destination = './wp-content/uploads/camps/docs/' . $nameCertMedLicence;
                 $tmpName = $docCertMedLicence['tmp_name'];
-                $sizeDoc= $docCertMedLicence['size'];
+                $sizeDoc = $docCertMedLicence['size'];
 
-                $extention= pathinfo($nameCertMedLicence, PATHINFO_EXTENSION);
+                $extention = pathinfo($nameCertMedLicence, PATHINFO_EXTENSION);
 
-                if($sizeDoc < 1000000){
-                    if(in_array($extention,['pdf','PDF'])){
-                        if(move_uploaded_file($tmpName,$destination)){
-                            $urlCertmedeffbb= './wp-content/uploads/camps/docs/'.$nameCertMedLicence;                        }
-                        else{
-                        echo "problem while moving uploaded file to destination";
+                if ($sizeDoc < 1000000) {
+                    if (in_array($extention, ['pdf', 'PDF'])) {
+                        if (move_uploaded_file($tmpName, $destination)) {
+                            $urlCertmedeffbb = './wp-content/uploads/camps/docs/' . $nameCertMedLicence;
+                        } 
+                        else {
+                            echo "problem while moving uploaded file to destination";
                         }
+                    } else {
+                        echo "que les document de type pdf sont accepter";
                     }
-                    else{
-                    echo "que les document de type pdf sont accepter";
-                    }
-                }
-                else{
-                echo " votre certificat médical ou de votre licence ffbb est trop lourd";
+                } else {
+                    echo " votre certificat médical ou de votre licence ffbb est trop lourd";
                 }
             }
-            else{
-            var_dump($docCertMedLicence);
-            echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
+             else {
+                var_dump($docCertMedLicence);
+                echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
             }
             //treatment of file autorisation_photo
-            if($docAutorisationPhoto['error'] ===UPLOAD_ERR_OK){
-                if($urlAutorisationPhoto['size']<= (1000000)){
+            if ($docAutorisationPhoto['error'] === UPLOAD_ERR_OK) {
+                if ($urlAutorisationPhoto['size'] <= (1000000)) {
                     $tempName = $docAutorisationPhoto['tmp_name'];
-                    $destination ='./wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
+                    $destination = './wp-content/uploads/camps/docs/' . $nameAutorisationPhoto;
 
                     $extention = pathinfo($nameAutorisationPhoto, PATHINFO_EXTENSION);
 
-                    if(in_array($extention, ['pdf','PDF'])){
-                        if(move_uploaded_file($tempName,$destination)){
-                            $urlAutorisationPhoto= './wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
+                    if (in_array($extention, ['pdf', 'PDF'])) {
+                        if (move_uploaded_file($tempName, $destination)) {
+                            $urlAutorisationPhoto = './wp-content/uploads/camps/docs/' . $nameAutorisationPhoto;
                             echo $nameAutorisationPhoto . " was successfully uploaded.";
+                        } else {
+                            echo "moving of " . $nameAutorisationPhoto . " failed.";
                         }
-                        else{
-                            echo "moving of " .$nameAutorisationPhoto . " failed.";
-                        }
-                    }
-                    else{
+                    } else {
                         echo $extention . " format is not allowed. please upload a file with pdf extension for autorisation_photo";
                     }
-                
-                }
-                else{
+
+                } else {
                     echo "the uploaded file autorisation_photo is too large. please try compressing";
+                }
+            } 
+            else {
+                echo "there was an error uploading the autorisation_photo file to the server";
             }
-         }
-         else{
-            echo "there was an error uploading the autorisation_photo file to the server";
-         }
         }
-            //check if the selected camp is available
-            //PDO connection to the DB
-            $sql ="SELECT * FROM mm_camp
+        //check if the selected camp is available
+        //PDO connection to the DB
+        $sql = "SELECT * FROM mm_camp
             WHERE id_camp = :id_camp";
-            try {
-                $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $stmt = $conn->prepare($sql);
-                $stmp->bindValue(':id_camp', $idCamp);
-                $stmt->execute([':id_camp'=>$idCamp]);
-                
-                $camp = $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $conn->prepare($sql);
+            $stmp->bindValue(':id_camp', $idCamp);
+            $stmt->execute([':id_camp' => $idCamp]);
 
-                $nomCamp = $camp['camp_name'];
-                $numMax = $camp['max_participants'];
-                $nombreInscrits = $camp['nombre_inscrits'];
-            } catch (PDOException $e) {
-                echo "Something went wrong while selectin a camp'.$e.'";
-            }
+            $camp = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $conn = null;
-            //PDO connection to the DB to insert the participants' information
-            if ($numMax > $nombreInscrits) {
-                $sqlInsert = "INSERT INTO mm_stagiaire (
-            date_inscription, 
-            id_camp, 
-            id_responsable_legal, 
-            nom_stagiaire, 
-            prenom_stagiaire, 
-            sex_stagiaire, 
-            mail_stagiaire, 
+            $nomCamp = $camp['camp_name'];
+            $numMax = $camp['max_participants'];
+            $nombreInscrits = $camp['nombre_inscrits'];
+        } catch (PDOException $e) {
+            echo "Something went wrong while selectin a camp'.$e.'";
+        }
+
+        $conn = null;
+        //PDO connection to the DB to insert the participants' information
+        if ($numMax > $nombreInscrits) {
+            $sqlInsert = "INSERT INTO mm_stagiaire (
+            date_inscription,
+            id_camp,
+            id_responsable_legal,
+            nom_stagiaire,
+            prenom_stagiaire,
+            sex_stagiaire,
+            mail_stagiaire,
             tel_stagiaire,
-            adresse_stagiaire, 
-            date_naissance,  
-            lien_cert_med_licence_FBB, 
+            adresse_stagiaire,
+            date_naissance,
+            lien_cert_med_licence_FBB,
             lien_justification_qf,
-            lien_consentement_photo, 
-            lien_securite_social, 
-            lien_mutuelle, 
-            lien_fiche_sanitaire, 
-            demande, 
-            lien_photo_passport, 
+            lien_consentement_photo,
+            lien_securite_social,
+            lien_mutuelle,
+            lien_fiche_sanitaire,
+            demande,
+            lien_photo_passport,
             tailles_vetement)
              value= (
                :date_inscription,
@@ -218,43 +212,43 @@ function inscriptionCamp($id_cpt)
                :lien_mutuelle,
                :lien_fiche_sanitaire,
                :demande,
-               :lien_photo_passport, 
+               :lien_photo_passport,
                :tailles_vetement
                )";
-                try {
-                    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
-                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $smt = $conn->prepare($sqlInsert);
+            try {
+                $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $smt = $conn->prepare($sqlInsert);
 
-                    $smt->bindValue(':date_inscription', $today);
-                    $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
-                    $smt->bindValue(':id_responsable', $idRespLegal, PDO::PARAM_INT);
-                    $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':prenom_stagiaire', $PrenomStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':date_naissance', $date_naissance);
-                    $smt->bindValue(':lien_cert_med_licence_FBB', $urlCertmedeffbb, PDO::PARAM_STR);
-                    $smt->bindValue(':lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
-                    $smt->bindValue(':lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
-                    $smt->bindValue(':lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
-                    $smt->bindValue(':lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
-                    $smt->bindValue(':lien_fiche_sanitaire', $urlficheSanitaire, PDO::PARAM_STR);
-                    $smt->bindValue('demande', $demande, PDO::PARAM_STR);
-                    $smt->bindValue('lien_photo_passport', $lien_photo_passport, PDO::PARAM_STR);
-                    $smt->bindValue('tailles_vetement', $tailles_vetement, PDO::PARAM_STR);
+                $smt->bindValue(':date_inscription', $today);
+                $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
+                $smt->bindValue(':id_responsable', $idRespLegal, PDO::PARAM_INT);
+                $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':prenom_stagiaire', $PrenomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
+                $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(':date_naissance', $date_naissance);
+                $smt->bindValue(':lien_cert_med_licence_FBB', $urlCertmedeffbb, PDO::PARAM_STR);
+                $smt->bindValue(':lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
+                $smt->bindValue(':lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
+                $smt->bindValue(':lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
+                $smt->bindValue(':lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
+                $smt->bindValue(':lien_fiche_sanitaire', $urlficheSanitaire, PDO::PARAM_STR);
+                $smt->bindValue('demande', $demande, PDO::PARAM_STR);
+                $smt->bindValue('lien_photo_passport', $lien_photo_passport, PDO::PARAM_STR);
+                $smt->bindValue('tailles_vetement', $tailles_vetement, PDO::PARAM_STR);
 
-                    $smt->execute();
+                $smt->execute();
 
-                } catch (PDOException $e) {
-                    echo "insertion to the tabel mm_stagiaire failed '.$e.';";
-                }
-            } else {
-                //complete
-                echo "there is slots available for this camp";
+            } catch (PDOException $e) {
+                echo "insertion to the tabel mm_stagiaire failed '.$e.';";
             }
+        } else {
+            //complete
+            echo "there is slots available for this camp";
+        }
 
     }
 
