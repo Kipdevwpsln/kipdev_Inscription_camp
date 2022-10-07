@@ -85,7 +85,7 @@ function inscriptionCamp($id_cpt)
         if (isset($_FILES)) {
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
-
+            
             $docSecuriteSocial = $_FILES['securite_social'];
             $docMutuelle = $_FILES['mutuelle'];
             $docFicheSanitaire = $_FILES['fiche_sanitaire'];
