@@ -159,8 +159,11 @@ function inscriptionCamp($id_cpt)
                     $extention= pathinfo($nameSecuriteSocial, PATHINFO_EXTENSION);
                     if(in_array($extention, array('pdf', 'PDF');
                     $destination= "./wp-content/uploads/camps/docs/" .$nameSecuriteSocial;
-                    move_uploaded_file($tempName, $destination);
-
+                    if (move_uploaded_file($tempName, $destination)){
+                        $urlSecuriteSocial = "./wp-content/uploads/camps/docs/" .$nameSecuriteSocial;
+                    }
+                    else{
+                        echo "there was an error while moving securite_social into the destination folder.";                  }
                 }
                 else{
                     echo " the file securite_social uploaded is too large";
