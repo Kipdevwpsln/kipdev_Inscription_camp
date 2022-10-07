@@ -157,7 +157,7 @@ function inscriptionCamp($id_cpt)
             echo "there was an error uploading the autorisation_photo file to the server";
          }
         }
-            //check if the selected camp is available,
+            //check if the selected camp is available,,
             //PDO connection to the DB
             $sql ="SELECT * FROM mm_camp
             WHERE id_camp = :id_camp";
