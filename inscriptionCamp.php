@@ -210,7 +210,7 @@ function inscriptionCamp($id_cpt)
                     if(in_array($extention, array('pdf', 'PDF'))){
                         if(move_uploaded_file($tempName, $destination)){
                             $urlficheSanitaire = "./wp-content/uploads/camps/docs/" .$nameFicheSanitaire;
-
+                            echo "doc mutual  was successfully uploaded.";
                         }
                         else{
                             echo "error moving fiche_sanitaire to the destination";
