@@ -109,6 +109,7 @@ function inscriptionCamp($id_cpt)
                     if (in_array($extention, ['pdf', 'PDF'])) {
                         if (move_uploaded_file($tmpName, $destination)) {
                             $urlCertmedeffbb = './wp-content/uploads/camps/docs/' . $nameCertMedLicence;
+                            echo "cert medical  was successfully uploaded.";
                         } else {
                             echo "problem while moving uploaded file to destination";
                         }
@@ -157,7 +158,7 @@ function inscriptionCamp($id_cpt)
                     if (in_array($extention, array('pdf', 'PDF'))) {
                         if (move_uploaded_file($tempName, $destination)) {
                             $urlSecuriteSocial = "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
-                            echo $urlSecuriteSocial;
+                            echo " file securite_social was successfully uploaded";
 
                         } else {
                             echo "there was a problem moving this file";
@@ -181,6 +182,7 @@ function inscriptionCamp($id_cpt)
                     if(in_array($extention,['pdf', 'PDF'])){
                         if(move_uploaded_file($tempName,$destination)){
                             $urlJustificatifmutuelle = './wp-content/uploads/camps/docs/' . $nameMutuelle;
+                            echo "doc mutual  was successfully uploaded.";
                         }
                         else{
                         echo "moving uploaded file 'mutual' failed: ";
