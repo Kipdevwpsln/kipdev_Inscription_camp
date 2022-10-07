@@ -34,8 +34,10 @@ function inscriptionCamp($id_cpt)
         $emailResponsablelegal = $_POST['mail_stagiaire'];
         $tailles_vetement = $_POST['tailles_selectioner'];
         $sexStagiaire = $_POST['sex_stagiaire'];
-        $campSelectioner = $_POST['camp_selectioner'];
+        $idCamp = $_POST['camp_selectioner'];
         $demande = $_POST['demande'];
+
+        echo ("the selected campis of id: " . $idCamp);
 
         $nomResponsablelegal = $_POST['nom_responsable_legal'];
         $prenomResponsablelegal = $_POST['prenom_responsable_legal'];
@@ -117,18 +119,20 @@ function inscriptionCamp($id_cpt)
             echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
             }
          }
-            //select camp where id_cpt= $idCpt
+            //check if the selected camp is available
             //PDO connection to the DB
-            $sql = "SELECT  FROM camp WHERE id_cpt= :id_cpt";
+            $sql ="SELECT * FROM mm_camp
+            WHERE id_camp = :id_camp";
             try {
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
- 
-                $result = $conn->prepare($sql);
-                $result->bindValue('id_cpt', $idCpt);
-                $camp = $result->fetch(PDO::FETCH_ASSOC);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stmt = $conn->prepare($sql);
+                $stmp->bindValue(':id_camp', $idCamp);
+                $stmt->execute([':id_camp'=>$idCamp]);
+                
+                $camp = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 $nomCamp = $camp['camp_name'];
-                $idCamp = $camp['id_camp'];
                 $numMax = $camp['max_participants'];
                 $nombreInscrits = $camp['nombre_inscrits'];
             } catch (PDOException $e) {
@@ -139,9 +143,25 @@ function inscriptionCamp($id_cpt)
             //PDO connection to the DB to insert the participants' information
             if ($numMax > $nombreInscrits) {
                 $sqlInsert = "INSERT INTO mm_stagiaire (
-            date_inscription, id_camp, id_responsable_legal, nom_stagiaire, prenom_stagiaire, sex_stagiaire, email_stagiaire, tel_stagiaire,
-            adresse_stagiaire, date_naissance,  lien_cert_med_licence_FBB, lien_justification_qf,
-            lien_consentement_photo, lien_securite_social, lien_mutuelle, lien_fiche_sanitaire, demande lien_photo_passport, tailles_vetement)
+            date_inscription, 
+            id_camp, 
+            id_responsable_legal, 
+            nom_stagiaire, 
+            prenom_stagiaire, 
+            sex_stagiaire, 
+            mail_stagiaire, 
+            tel_stagiaire,
+            adresse_stagiaire, 
+            date_naissance,  
+            lien_cert_med_licence_FBB, 
+            lien_justification_qf,
+            lien_consentement_photo, 
+            lien_securite_social, 
+            lien_mutuelle, 
+            lien_fiche_sanitaire, 
+            demande, 
+            lien_photo_passport, 
+            tailles_vetement)
              value= (
                :date_inscription,
                :id_camp,
@@ -160,13 +180,13 @@ function inscriptionCamp($id_cpt)
                :lien_mutuelle,
                :lien_fiche_sanitaire,
                :demande,
-               :lien_photo_passport
+               :lien_photo_passport, 
                :tailles_vetement
                )";
                 try {
                     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $smt = $conn->prepair($sqlInsert);
+                    $smt = $conn->prepare($sqlInsert);
 
                     $smt->bindValue(':date_inscription', date("Y-m-d"));
                     $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
@@ -176,9 +196,10 @@ function inscriptionCamp($id_cpt)
                     $smt->bindValue(':sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
                     $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
                     $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':date_naissance', $date_naissance);
                     $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
+                    $smt->bindValue(':date_naissance', $date_naissance);
                     $smt->bindValue(':lien_cert_med_licence_FBB', $urlCertmedeffbb, PDO::PARAM_STR);
+                    $smt->bindValue(':lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
                     $smt->bindValue(':lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
                     $smt->bindValue(':lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
                     $smt->bindValue(':lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
