@@ -25,7 +25,7 @@ function inscriptionCamp($id_cpt)
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //id responsable legal
 
-        // Recover variables from table
+        // Recover variables from url
         $nomStagiaire = $_POST['nom_stagiaire'];
         $PrenomStagiaire = $_POST['Prenom_stagiaire'];
         $adresseStagiaire = $_POST['adresse_stagiaire'];
@@ -202,7 +202,7 @@ function inscriptionCamp($id_cpt)
             }
             //treatment of of fiche sanitaire
             if ($docFicheSanitaire ['error'] === UPLOAD_ERR_OK) {
-                if ($docFicheSanitaire ['size'] === 0 <= 1000000) {
+                if ($docFicheSanitaire ['size'] <= 1000000) {
                     $extention =pathinfo($nameFicheSanitaire, PATHINFO_EXTENSION);
                     $tempName = $nameFicheSanitaire['tmp_name'];
                     $destination = "./wp-content/uploads/camps/docs/" . $nameFicheSanitaire;
@@ -242,7 +242,7 @@ function inscriptionCamp($id_cpt)
 
             $camp = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $nomCamp = $camp['camp_name'];
+            $nomCamp = $camp['nom_camp'];
             $numMax = $camp['max_participants'];
             $nombreInscrits = $camp['nombre_inscrits'];
         } catch (PDOException $e) {
@@ -299,7 +299,7 @@ function inscriptionCamp($id_cpt)
                 $smt = $conn->prepare($sqlInsert);
 
                 $smt->bindValue(':date_inscription', $today);
-                $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
+                $smt->bindValue(':id_camp', $idCamp, PDO::PARAM_INT);
                 $smt->bindValue(':id_responsable', $idRespLegal, PDO::PARAM_INT);
                 $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
                 $smt->bindValue(':prenom_stagiaire', $PrenomStagiaire, PDO::PARAM_STR);
@@ -307,7 +307,7 @@ function inscriptionCamp($id_cpt)
                 $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
                 $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
                 $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':date_naissance', $date_naissance);
+                $smt->bindValue(':date_naissance', $dateNaissance);
                 $smt->bindValue(':lien_cert_med_licence_FBB', $urlCertmedeffbb, PDO::PARAM_STR);
                 $smt->bindValue(':lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
                 $smt->bindValue(':lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
