@@ -27,7 +27,7 @@ function inscriptionCamp($id_cpt)
 
         // Recover variables from table
         $nomStagiaire = $_POST['nom_stagiaire'];
-        $PrenStagiaire = $_POST['Prenom_stagiaire'];
+        $PrenomStagiaire = $_POST['Prenom_stagiaire'];
         $adresseStagiaire = $_POST['adresse_stagiaire'];
         $taillesSelectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
@@ -36,6 +36,14 @@ function inscriptionCamp($id_cpt)
         $sexStagiaire = $_POST['sex_stagiaire'];
         $idCamp = $_POST['camp_selectioner'];
         $demande = $_POST['demande'];
+        $mailStagiaire = $_POST['mail_stagiaire'];
+        $telStagiaire = $_POST['tel_stagiaire'];
+
+        //today
+       
+        $today= date("Y-m-d");
+        echo $today;
+
 
         echo ("the selected campis of id: " . $idCamp);
 
@@ -188,11 +196,11 @@ function inscriptionCamp($id_cpt)
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $smt = $conn->prepare($sqlInsert);
 
-                    $smt->bindValue(':date_inscription', date("Y-m-d"));
+                    $smt->bindValue(':date_inscription', $today);
                     $smt->bindValue(':id_camp', $id_Camp, PDO::PARAM_INT);
                     $smt->bindValue(':id_responsable', $idRespLegal, PDO::PARAM_INT);
                     $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-                    $smt->bindValue(':prenom_stagiaire', $Prenomstagiaire, PDO::PARAM_STR);
+                    $smt->bindValue(':prenom_stagiaire', $PrenomStagiaire, PDO::PARAM_STR);
                     $smt->bindValue(':sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
                     $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
                     $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
@@ -230,11 +238,11 @@ function inscriptionCamp($id_cpt)
         <div class="row">
         <div class="col">
         <label for="nom_stagiaire">Votre NOM *</label>
-        <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+        <input type="text" name="nom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomStagiaire . '">
         </div>
         <div class="col">
         <label for="prenom_stagiaire">Votre Prenom*</label>
-        <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $nomstagiaire . '">
+        <input type="text" name="prenom_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $prenomStagiaire . '">
         </div>
         <div class="col">
         <label for="sex_stagiaire">Votre genre  *</label>
@@ -345,7 +353,7 @@ function inscriptionCamp($id_cpt)
     <div class="row">
     <div class="col">
     <label for="demande">message *</label>
-    <textarea class="form-control" name="Demande" id="demande" rows="6">Votre demande personnelle</textarea>
+    <textarea class="form-control" name="demande" id="demande" rows="6">Votre demande personnelle</textarea>
     </div>
     <div class="col">
     <h4> Info responsable legal</h4>
@@ -354,25 +362,25 @@ function inscriptionCamp($id_cpt)
         <div class="row">
         <div class="col">
         <label for="nom_responsable_legal">Nom </label>
-        <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+        <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $nomStagiaire . '">
         </div>
         <div class="col">
         <label for="prenom_responsable_legal">prénom </label>
-        <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+        <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $prenomResponsablelegal . '">
         </div>
         </div>
         <div class="row">
         <div class="col">
         <label for="nom_responsable_legal">Numéro tel</label>
-        <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+        <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $nomResponsablelegal . '">
         </div>
         <div class="col">
-        <label for="prenom_responsable_legal">E-mail </label>
-        <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+        <label for="email_responsable_legal">E-mail </label>
+        <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $emailResponsablelegal . '">
         </div>
         </div>
         <label for="adresse_responsable_legal">Adresse </label>
-        <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $Prenomstagiaire . '">
+        <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $adresseResponsablelegal . '">
 
         </div>
         </div>
