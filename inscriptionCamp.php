@@ -85,8 +85,8 @@ function inscriptionCamp($id_cpt)
         if (isset($_FILES)) {
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
-
             $docSecuriteSocial = $_FILES['securite_social'];
+
             $docMutuelle = $_FILES['mutuelle'];
             $docFicheSanitaire = $_FILES['fiche_sanitaire'];
 
@@ -171,6 +171,32 @@ function inscriptionCamp($id_cpt)
                 }
             } else {
                 echo "there was an error uploading the securte_social file to the server";
+            }
+
+            if($docMutuelle['error']=== UPLOAD_ERR_OK){
+                if($docMutuelle['size']<= (1000000)) {
+                    $tempName = $docMutuelle['tmp_name'];
+                    $destination ='./wp-content/uploads/camps/docs/'.$nameMutuelle;
+                    $extention = pathinfo($nameMutuelle, PATHINFO_EXTENSION);
+                    if(in_array($extention,['pdf', 'PDF'])){
+                        if(move_uploaded_file($tempName,$destination)){
+                            $urlJustificatifmutuelle = './wp-content/uploads/camps/docs/' . $nameMutuelle;
+                        }
+                        else{
+                        echo "moving uploaded file 'mutual' failed: ";
+                        }
+                    }
+                    else {
+                        echo "the file type ".$extention." is not supported";
+                    }
+                }
+                else {
+                    echo "the file justification mutual is too heavy";
+                }
+
+            }
+            else {
+                echo " there was an error uploading justification mutual";
             }
         }
         //check if the selected camp is available
