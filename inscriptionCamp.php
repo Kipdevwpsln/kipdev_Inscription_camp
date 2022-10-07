@@ -150,7 +150,7 @@ function inscriptionCamp($id_cpt)
             else {
                 echo "there was an error uploading the autorisation_photo file to the server";
             }
-            //treatment of securite_social
+            //treatment of securite_social file.
             if ($docSecuriteSocial ['error'] === UPLOAD_ERR_OK) {
                 if ($docSecuriteSocial ['size'] <= 1000000) {
                     // this function below gets the extension from the file before going to the loop,
