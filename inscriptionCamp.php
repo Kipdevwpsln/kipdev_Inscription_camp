@@ -85,25 +85,26 @@ function inscriptionCamp($id_cpt)
         //treatment images
         if(isset ($_FILES)){
             $docCertMedLicence= $_FILES['cert_mede_ffbb'];
-            var_dump($docCertMedLicence);
+            $docAutorisationPhoto = $_FILES['autorisation_photo'];
 
-            $nameCertMedLicence = $docCertMedLicence['name'];
+            $docSecuriteSocial = $_FILES['securite_social'];
+            $docMutuelle = $_FILES['mutuelle'];
+            $docFicheSanitaire = $_FILES['fiche_sanitaire'];
 
+            //names
+            $nameCertMedLicence= $_FILES['cert_mede_ffbb']['name'];
             $nameAutorisationPhoto = $_FILES['autorisation_photo']['name'];
-            $nameSecuritéSocial = $_FILES['securite_social']['name'];
-            $nameFicheSanitaire = $_FILES['fiche_sanitaire'];
+            $nameSecuriteSocial = $_FILES['securite_social']['name'];
             $nameMutuelle = $_FILES['mutuelle']['name'];
-            
+            $nameFicheSanitaire = $_FILES['fiche_sanitaire']['name'];
 
+            
             //traitement de cert medical ou licence ffb
             if ($docCertMedLicence['error'] === UPLOAD_ERR_OK){
                 $destination = './wp-content/uploads/camps/docs/' .$nameCertMedLicence;
                 $tmpName = $docCertMedLicence['tmp_name'];
                 $sizeDoc= $docCertMedLicence['size'];
 
-                print_r("the size is: " . $sizeDoc . "\n");
-                print_r("the temp name is: " . $tmpName . "\n");
-                
                 $extention= pathinfo($nameCertMedLicence, PATHINFO_EXTENSION);
 
                 if($sizeDoc < 1000000){
@@ -125,6 +126,31 @@ function inscriptionCamp($id_cpt)
             else{
             var_dump($docCertMedLicence);
             echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
+            }
+            //treatment of file autorisation_photo
+            if($docAutorisationPhoto['error'] ===UPLOAD_ERR_OK){
+                if($urlAutorisationPhoto['size']<= (1000000)){
+                    $tempName = $docAutorisationPhoto['tmp_name'];
+                    $destination ='./wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
+
+                    $extention = pathinfo($nameAutorisationPhoto, PATHINFO_EXTENSION);
+
+                    if(in_array($extention, ['pdf','PDF'])){
+                        if(move_uploaded_file($tempName,$destination)){
+                            $urlAutorisationPhoto= './wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
+                            echo $urlAutorisationPhoto;
+                        }
+                    else{
+                        echo $extention . " format is not allowed. please upload a file with pdf extension for autorisation_photo";
+                    }
+                
+                }
+                else{
+                    echo "the uploaded file autorisation_photo is too large. please try compressing";
+            }
+        }
+            else{
+                echo "there was an error uploading the autorisation_photo file to the server";
             }
          }
             //check if the selected camp is available
