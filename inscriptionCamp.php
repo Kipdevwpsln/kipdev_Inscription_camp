@@ -153,7 +153,7 @@ function inscriptionCamp($id_cpt)
             //treatment of securite_social
             if ($docSecuriteSocial ['error'] === UPLOAD_ERR_OK) {
                 if ($docSecuriteSocial ['size'] <= 1000000) {
-                    // this function below gets the extension from the file before going to the loop,
+                    // this function below gets the extension from the file before going to the loop.
                 $extention = pathinfo($nameSecuriteSocial, PATHINFO_EXTENSION);
                 $tempName = $docSecuriteSocial['tmp_name'];
                 $destination = "./wp-content/uploads/camps/docs/".$nameSecuriteSocial;
