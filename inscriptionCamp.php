@@ -85,7 +85,7 @@ function inscriptionCamp($id_cpt)
         if (isset($_FILES)) {
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
-            
+
             $docSecuriteSocial = $_FILES['securite_social'];
             $docMutuelle = $_FILES['mutuelle'];
             $docFicheSanitaire = $_FILES['fiche_sanitaire'];
@@ -109,8 +109,7 @@ function inscriptionCamp($id_cpt)
                     if (in_array($extention, ['pdf', 'PDF'])) {
                         if (move_uploaded_file($tmpName, $destination)) {
                             $urlCertmedeffbb = './wp-content/uploads/camps/docs/' . $nameCertMedLicence;
-                        } 
-                        else {
+                        } else {
                             echo "problem while moving uploaded file to destination";
                         }
                     } else {
@@ -119,8 +118,7 @@ function inscriptionCamp($id_cpt)
                 } else {
                     echo " votre certificat médical ou de votre licence ffbb est trop lourd";
                 }
-            }
-             else {
+            } else {
                 var_dump($docCertMedLicence);
                 echo "il y a eu une erreur lors du téléchargement de votre certificat médical ou de votre licence ffbb";
             }
@@ -146,39 +144,35 @@ function inscriptionCamp($id_cpt)
                 } else {
                     echo "the uploaded file autorisation_photo is too large. please try compressing";
                 }
-            } 
-            else {
+            } else {
                 echo "there was an error uploading the autorisation_photo file to the server";
             }
             //treatment of securite_social file.
-            if ($docSecuriteSocial ['error'] === UPLOAD_ERR_OK) {
-                if ($docSecuriteSocial ['size'] <= 1000000) {
+            if ($docSecuriteSocial['error'] === UPLOAD_ERR_OK) {
+                if ($docSecuriteSocial['size'] <= 1000000) {
                     // this function below gets the extension from the file before going to the loop,
-                $extention = pathinfo($nameSecuriteSocial, PATHINFO_EXTENSION);
-                $tempName = $docSecuriteSocial['tmp_name'];
-                $destination = "./wp-content/uploads/camps/docs/".$nameSecuriteSocial;
-                if (in_array($extention, array('pdf', 'PDF'))){
-                    if (move_uploaded_file($tempName, $destination)){
-                        $urlSecuriteSocial= "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
-                        echo $urlSecuriteSocial;
+                    $extention = pathinfo($nameSecuriteSocial, PATHINFO_EXTENSION);
+                    $tempName = $docSecuriteSocial['tmp_name'];
+                    $destination = "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
+                    if (in_array($extention, array('pdf', 'PDF'))) {
+                        if (move_uploaded_file($tempName, $destination)) {
+                            $urlSecuriteSocial = "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
+                            echo $urlSecuriteSocial;
 
+                        } else {
+                            echo "there was a problem moving this file";
+                        }
+
+                    } else {
+                        echo "upload the correct extension in securite_social";
                     }
-                    else{
-                        echo "there was a problem moving this file";
-                    }
-
+                } else {
+                    echo "file securite_social is too large to be uploaded";
                 }
-                else{
-                    echo "upload the correct extension in securite_social";
-                }
-
-        else{
-            echo "file securite_social is too large to be uploaded";
+            } else {
+                echo "there was an error uploading the securte_social file to the server";
+            }
         }
-        else {
-            echo "there was an error uploading the securte_social file to the server";
-        }
-    }
         //check if the selected camp is available
         //PDO connection to the DB
         $sql = "SELECT * FROM mm_camp
