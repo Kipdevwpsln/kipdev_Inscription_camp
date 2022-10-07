@@ -110,7 +110,7 @@ function inscriptionCamp($id_cpt)
                 if($sizeDoc < 1000000){
                     if(in_array($extention,['pdf','PDF'])){
                         if(move_uploaded_file($tmpName,$destination)){
-                            $urlCertmedeffbb= "";                        }
+                            $urlCertmedeffbb= './wp-content/uploads/camps/docs/'.$nameCertMedLicence;                        }
                         else{
                         echo "problem while moving uploaded file to destination";
                         }
@@ -138,10 +138,10 @@ function inscriptionCamp($id_cpt)
                     if(in_array($extention, ['pdf','PDF'])){
                         if(move_uploaded_file($tempName,$destination)){
                             $urlAutorisationPhoto= './wp-content/uploads/camps/docs/'.$nameAutorisationPhoto;
-                            echo $urlAutorisationPhoto;
+                            echo $nameAutorisationPhoto . " was successfully uploaded.";
                         }
                         else{
-                            echo "moving failed";
+                            echo "moving of " .$nameAutorisationPhoto . " failed.";
                         }
                     }
                     else{
@@ -152,11 +152,11 @@ function inscriptionCamp($id_cpt)
                 else{
                     echo "the uploaded file autorisation_photo is too large. please try compressing";
             }
-
-            else{
-                echo "there was an error uploading the autorisation_photo file to the server";
-            }
          }
+         else{
+            echo "there was an error uploading the autorisation_photo file to the server";
+         }
+        }
             //check if the selected camp is available
             //PDO connection to the DB
             $sql ="SELECT * FROM mm_camp
