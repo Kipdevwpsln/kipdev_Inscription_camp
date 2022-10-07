@@ -170,7 +170,7 @@ function inscriptionCamp($id_cpt)
                 }
          }
          else{
-            echo "ther was an error while uploading securite_social file to the server";
+            echo "there was an error while uploading securite_social file to the server";
          }
             //check if the selected camp is available
             //PDO connection to the DB
