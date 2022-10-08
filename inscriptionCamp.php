@@ -41,7 +41,7 @@ function inscriptionCamp($id_cpt)
         $lien_photo_passport ="";
         //today
 
-        $today = date("Y-m-d");
+        $today = date('Y-m-d H:i:s');
         echo $today;
 
         echo ("the selected campis of id: " . $idCamp);
@@ -303,23 +303,22 @@ function inscriptionCamp($id_cpt)
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $smt = $conn->prepare($sqlInsert);
-
-                $smt->bindValue(':date_inscription', $today);
-                $smt->bindValue(':id_camp', $idCamp, PDO::PARAM_INT);
-                $smt->bindValue(':id_responsable_legal', $idRespLegal, PDO::PARAM_INT);
-                $smt->bindValue(':nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':prenom_stagiaire', $prenomStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
+                $stmp->bindValue('date_inscription' , $today);
+                $smt->bindValue('id_camp', $idCamp, PDO::PARAM_INT);
+                $smt->bindValue('id_responsable_legal', $idRespLegal, PDO::PARAM_INT);
+                $smt->bindValue('nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue('prenom_stagiaire', $prenomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue('sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
+                $smt->bindValue('mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
                 $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-                $smt->bindValue(':date_naissance', $dateNaissance);
-                $smt->bindValue(':lien_cert_med_licence_ffbb', $urlCertmedeffbb, PDO::PARAM_STR);
-                $smt->bindValue(':lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
-                $smt->bindValue(':lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
-                $smt->bindValue(':lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
-                $smt->bindValue(':lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
-                $smt->bindValue(':lien_fiche_sanitaire', $urlficheSanitaire, PDO::PARAM_STR);
+                $smt->bindValue('adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
+                $smt->bindValue('date_naissance', $dateNaissance);
+                $smt->bindValue('lien_cert_med_licence_ffbb', $urlCertmedeffbb, PDO::PARAM_STR);
+                $smt->bindValue('lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
+                $smt->bindValue('lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
+                $smt->bindValue('lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
+                $smt->bindValue('lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
+                $smt->bindValue('lien_fiche_sanitaire', $urlficheSanitaire, PDO::PARAM_STR);
                 $smt->bindValue('demande', $demande, PDO::PARAM_STR);
                 $smt->bindValue('lien_photo_passport', $lien_photo_passport, PDO::PARAM_STR);
                 $smt->bindValue('tailles_vetement', $tailles_vetement, PDO::PARAM_STR);
