@@ -83,6 +83,12 @@ function inscriptionCamp($id_cpt)
 
         //treatment images
         if (isset($_FILES)) {
+            $urlAutorisationPhoto ="";
+            $urlCertmedeffbb ="";
+            $urlficheSanitaire ="";
+            $urlJustificatifmutuelle ="";
+            $urlJustificationqf ="";
+            
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
             $docSecuriteSocial = $_FILES['securite_social'];
@@ -204,7 +210,7 @@ function inscriptionCamp($id_cpt)
             if ($docFicheSanitaire ['error'] === UPLOAD_ERR_OK) {
                 if ($docFicheSanitaire ['size'] <= 1000000) {
                     $extention =pathinfo($nameFicheSanitaire, PATHINFO_EXTENSION);
-                    $tempName = $nameFicheSanitaire['tmp_name'];
+                    $tempName = $docFicheSanitaire['tmp_name'];
                     $destination = "./wp-content/uploads/camps/docs/" . $nameFicheSanitaire;
 
                     if(in_array($extention, array('pdf', 'PDF'))){
@@ -351,6 +357,7 @@ function inscriptionCamp($id_cpt)
         <select class="form-select" aria-label="Sex" name="sex_stagiaire" required="required" placeholder="xs">
         <option selected>' . $sexStagiaire . '</option>
         <option value="">xs</option>
+
         <option value="garçon">Garçon</option>
         <option value="fille">Fille</option>
         <option value="Je préfère ne pas dire">Je préfère ne pas dire</option>
