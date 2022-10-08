@@ -29,7 +29,6 @@ function inscriptionCamp($id_cpt)
         $nomStagiaire = $_POST['nom_stagiaire'];
         $prenomStagiaire = $_POST['prenom_stagiaire'];
         $adresseStagiaire = $_POST['adresse_stagiaire'];
-        $taillesSelectioner = $_POST['tailles_selectioner'];
         $dateNaissance = $_POST['date_naissance'];
         $emailResponsablelegal = $_POST['mail_stagiaire'];
         $tailles_vetement = $_POST['tailles_selectioner'];
@@ -41,7 +40,7 @@ function inscriptionCamp($id_cpt)
         $lien_photo_passport ="";
         //today
 
-        $today = date('Y-m-d H:i:s');
+        $today = date('Y-m-d');
         echo $today;
 
         echo ("the selected campis of id: " . $idCamp);
@@ -88,6 +87,7 @@ function inscriptionCamp($id_cpt)
             $urlficheSanitaire ="";
             $urlJustificatifmutuelle ="";
             $urlJustificationqf ="";
+            $urlSecuriteSocial ="";
 
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
             $docAutorisationPhoto = $_FILES['autorisation_photo'];
@@ -114,7 +114,7 @@ function inscriptionCamp($id_cpt)
                 if ($sizeDoc < 1000000) {
                     if (in_array($extention, ['pdf', 'PDF'])) {
                         if (move_uploaded_file($tmpName, $destination)) {
-                            $urlCertmedeffbb = './wp-content/uploads/camps/docs/' . $nameCertMedLicence;
+                            $urlCertmedeffbb = 'https://www.magalimendy.fr/wp-content/uploads/camps/docs/' . $nameCertMedLicence;
                             echo "cert medical  was successfully uploaded.";
                         } else {
                             echo "problem while moving uploaded file to destination";
@@ -131,7 +131,7 @@ function inscriptionCamp($id_cpt)
             }
             //treatment of file autorisation_photo
             if ($docAutorisationPhoto['error'] === UPLOAD_ERR_OK) {
-                if ($urlAutorisationPhoto['size'] <= (1000000)) {
+                if ($docAutorisationPhoto['size'] <= 1000000) {
                     $tempName = $docAutorisationPhoto['tmp_name'];
                     $destination = './wp-content/uploads/camps/docs/' . $nameAutorisationPhoto;
 
@@ -139,7 +139,7 @@ function inscriptionCamp($id_cpt)
 
                     if (in_array($extention, ['pdf', 'PDF'])) {
                         if (move_uploaded_file($tempName, $destination)) {
-                            $urlAutorisationPhoto = './wp-content/uploads/camps/docs/' . $nameAutorisationPhoto;
+                            $urlAutorisationPhoto = 'https://www.magalimendy.fr/wp-content/uploads/camps/docs/' . $nameAutorisationPhoto;
                             echo $nameAutorisationPhoto . " was successfully uploaded.";
                         } else {
                             echo "moving of " . $nameAutorisationPhoto . " failed.";
@@ -163,7 +163,7 @@ function inscriptionCamp($id_cpt)
                     $destination = "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
                     if (in_array($extention, array('pdf', 'PDF'))) {
                         if (move_uploaded_file($tempName, $destination)) {
-                            $urlSecuriteSocial = "./wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
+                            $urlSecuriteSocial = "https://www.magalimendy.fr/wp-content/uploads/camps/docs/" . $nameSecuriteSocial;
                             echo " file securite_social was successfully uploaded";
 
                         } else {
@@ -187,7 +187,7 @@ function inscriptionCamp($id_cpt)
                     $extention = pathinfo($nameMutuelle, PATHINFO_EXTENSION);
                     if(in_array($extention,['pdf', 'PDF'])){
                         if(move_uploaded_file($tempName,$destination)){
-                            $urlJustificatifmutuelle = './wp-content/uploads/camps/docs/' . $nameMutuelle;
+                            $urlJustificatifmutuelle = 'https://www.magalimendy.fr/wp-content/uploads/camps/docs/' . $nameMutuelle;
                             echo "doc mutual  was successfully uploaded.";
                         }
                         else{
@@ -215,7 +215,7 @@ function inscriptionCamp($id_cpt)
 
                     if(in_array($extention, array('pdf', 'PDF'))){
                         if(move_uploaded_file($tempName, $destination)){
-                            $urlficheSanitaire = "./wp-content/uploads/camps/docs/" .$nameFicheSanitaire;
+                            $urlficheSanitaire = "https://www.magalimendy.fr/wp-content/uploads/camps/docs/" .$nameFicheSanitaire;
                             echo "doc mutual  was successfully uploaded.";
                         }
                         else{
@@ -278,7 +278,7 @@ function inscriptionCamp($id_cpt)
             demande,
             lien_photo_passport,
             tailles_vetement)
-             value= (
+             value(
                :date_inscription,
                :id_camp,
                :id_responsable_legal,
@@ -303,26 +303,27 @@ function inscriptionCamp($id_cpt)
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $smt = $conn->prepare($sqlInsert);
-                $stmp->bindValue('date_inscription' , $today);
-                $smt->bindValue('id_camp', $idCamp, PDO::PARAM_INT);
-                $smt->bindValue('id_responsable_legal', $idRespLegal, PDO::PARAM_INT);
-                $smt->bindValue('nom_stagiaire', $nomStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('prenom_stagiaire', $prenomStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('sex_stagiaire', $sexStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('mail_stagiaire', $mailStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('tel_stagiaire', $telStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('adresse_stagiaire', $adresseStagiaire, PDO::PARAM_STR);
-                $smt->bindValue('date_naissance', $dateNaissance);
-                $smt->bindValue('lien_cert_med_licence_ffbb', $urlCertmedeffbb, PDO::PARAM_STR);
-                $smt->bindValue('lien_justification_qf', $urlJustificationqf, PDO::PARAM_STR);
-                $smt->bindValue('lien_consentement_photo', $urlAutorisationPhoto, PDO::PARAM_STR);
-                $smt->bindValue('lien_securite_social', $urlSecuriteSocial, PDO::PARAM_STR);
-                $smt->bindValue('lien_mutuelle', $urlJustificatifmutuelle, PDO::PARAM_STR);
-                $smt->bindValue('lien_fiche_sanitaire', $urlficheSanitaire, PDO::PARAM_STR);
-                $smt->bindValue('demande', $demande, PDO::PARAM_STR);
-                $smt->bindValue('lien_photo_passport', $lien_photo_passport, PDO::PARAM_STR);
-                $smt->bindValue('tailles_vetement', $tailles_vetement, PDO::PARAM_STR);
 
+                $smt->bindValue(":date_inscription", $today);
+                $smt->bindValue(":id_camp", $idCamp, PDO::PARAM_INT);
+                $smt->bindValue(":id_responsable_legal",$idRespLegal, PDO::PARAM_INT);
+                $smt->bindValue(":nom_stagiaire", $nomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":prenom_stagiaire", $prenomStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":sex_stagiaire", $sexStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":mail_stagiaire",$mailStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":tel_stagiaire", $telStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":adresse_stagiaire",$adresseStagiaire, PDO::PARAM_STR);
+                $smt->bindValue(":date_naissance", $dateNaissance);
+                $smt->bindValue(":lien_cert_med_licence_ffbb", $urlCertmedeffbb, PDO::PARAM_STR);
+                $smt->bindValue(":lien_justification_qf", $urlJustificationqf, PDO::PARAM_STR);
+                $smt->bindValue(":lien_consentement_photo",$urlAutorisationPhoto, PDO::PARAM_STR);
+                $smt->bindValue(":lien_securite_social", $urlSecuriteSocial, PDO::PARAM_STR);
+                $smt->bindValue(":lien_mutuelle", $urlJustificatifmutuelle, PDO::PARAM_STR);
+                $smt->bindValue(":lien_fiche_sanitaire", $urlficheSanitaire, PDO::PARAM_STR);
+                $smt->bindValue(":demande", $demande, PDO::PARAM_STR);
+                $smt->bindValue(":lien_photo_passport", $lien_photo_passport, PDO::PARAM_STR);
+                $smt->bindValue(":tailles_vetement", $tailles_vetement, PDO::PARAM_STR);
+                
                 $smt->execute();
 
             } catch (PDOException $e) {
@@ -383,9 +384,9 @@ function inscriptionCamp($id_cpt)
          <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
         </div>
         <div class="col">
-        <label for="tailles_selectionne">tailles de vêtements  *</label>
+        <label for="tailles_selectioner">tailles de vêtements  *</label>
         <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-        <option selected>' . $taillesSelectioner . '</option>
+        <option selected>' . $tailles_vetement . '</option>
         <option value="xs">xs</option>
         <option value="s">s</option>
         <option value="m">m</option>
