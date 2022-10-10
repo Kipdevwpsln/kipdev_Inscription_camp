@@ -333,6 +333,8 @@ function inscriptionCamp($id_cpt)
             //complete
             echo "there is slots available for this camp";
         }
+        //update the number of subscriber
+    
 
     }
 
@@ -340,7 +342,7 @@ function inscriptionCamp($id_cpt)
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
         <div class="container">
         <h3>inscription camp</h3>
-        <div class="form_group">
+        <div class="form_group">UPDATE
         <form method = "post" action="/inscription_camp" action="/inscription_camp" accept-charset="utf-8" enctype="multipart/form-data">
 
         <div class="row">
@@ -356,11 +358,8 @@ function inscriptionCamp($id_cpt)
         <label for="sex_stagiaire">Votre genre  *</label>
         <select class="form-select" aria-label="Sex" name="sex_stagiaire" required="required" placeholder="xs">
         <option selected>' . $sexStagiaire . '</option>
-        <option value="">xs</option>
-
         <option value="garçon">Garçon</option>
         <option value="fille">Fille</option>
-        <option value="Je préfère ne pas dire">Je préfère ne pas dire</option>
         </select>
         </div>
         </div>
@@ -376,26 +375,13 @@ function inscriptionCamp($id_cpt)
         <input type="text" name="tel_stagiaire" id="tel_stagiaire" class="form-control" required="required" value="' . $telStagiaire . '">
         </div>
         </div>
-        <br>
-
+        <br
         <div class="row">
         <div class="col">
         <label for="adresse_stagiaire">Votre adresse *</label>
-         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
-        </div>
-        <div class="col">
-        <label for="tailles_selectioner">tailles de vêtements  *</label>
-        <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-        <option selected>' . $tailles_vetement . '</option>
-        <option value="xs">xs</option>
-        <option value="s">s</option>
-        <option value="m">m</option>
-        <option value="l">l</option>
-        <option value="xl">xl</option>
-        </select>
+         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '" placholder ="15 Rue st. Vincent 4800 Nantes" >
         </div>
         </div>
-
         <br>
         <div class="row">
         <div class="col">
@@ -430,6 +416,36 @@ function inscriptionCamp($id_cpt)
     </div>
     </div>
     <br>
+
+    <div class="row">
+        <h4>Tailles de vêtements</h4> 
+        <div class="row">
+        <div class="col">
+        <label for="tailles_haut">tailles de haut  *</label>
+        <select class="form-select" name="tailles_haut" required="required" placeholder="xs">
+            <option value="xs">xs</option>
+            <option value="s">s</option>
+            <option value="m">m</option>
+            <option value="l">l</option>
+        <option value="xl">xl</option>
+      </select>
+      </div>
+        <div class="col">
+        <label for="tailles_bas">tailles de bas  *</label>
+        <select class="form-select" name="tailles_bas" required="required" placeholder="xs">
+        <option value="xs">xs</option>
+        <option value="s">s</option>
+        <option value="m">m</option>
+        <option value="l">l</option>
+        <option value="xl">xl</option>
+      </select>
+        </div>
+        </div>
+        </div>
+        <br />
+
+
+
     <h4>Télécharger les documents</h4>
     <p>! seuls les documents de type PDF sont acceptés</p>
     <br>

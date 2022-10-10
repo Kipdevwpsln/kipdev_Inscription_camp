@@ -96,15 +96,30 @@ function inscriptionCamp($id_cpt)
                         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '">
                     </div>
                     <div class="col">
-                    <label for="tailles_selectionne">tailles de vêtements  *</label>
-                    <select class="form-select" aria-label="Camp" name="tailles_selectioner" required="required" placeholder="xs">
-                    <option selected>' . $taillesSelectioner . '</option>
-                    <option value="xs">xs</option>
-                    <option value="s">s</option>
-                    <option value="m">m</option>
-                    <option value="l">l</option>
-                    <option value="xl">xl</option>
-                  </select>
+                        <h4>tailles de vêtements</h4> 
+                        <div class="row">
+                        <label for="tailles_haut">tailles de haut  *</label>
+                        <select class="form-select" name="tailles_haut" required="required" placeholder="xs">
+                            <option value="xs">xs</option>
+                            <option value="s">s</option>
+                            <option value="m">m</option>
+                            <option value="l">l</option>
+                        <option value="xl">xl</option>
+                      </select>
+                        <div class="col">
+                        <label for="tailles_bas">tailles de bas  *</label>
+                        <select class="form-select" name="tailles_bas" required="required" placeholder="xs">
+                        <option value="xs">xs</option>
+                        <option value="s">s</option>
+                        <option value="m">m</option>
+                        <option value="l">l</option>
+                        <option value="xl">xl</option>
+                      </select>
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    
                 </div>
                 </div>
 
