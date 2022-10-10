@@ -20,7 +20,6 @@ function inscriptionCamp($id_cpt)
     $age_stagiare = '';
     $idCpt = get_the_ID();
     $categorie = get_the_category($post->ID);
-    var_dump($categorie);
 
     if (isset($_POST) && isset($_POST['btn_register_camp'])) {
         //id responsable legal
@@ -475,6 +474,9 @@ function inscriptionCamp($id_cpt)
 
     <h4>Télécharger les documents</h4>
     <p>! seuls les documents de type PDF sont acceptés</p>
+    <p>documents types peuvent être téléchargés 
+    <a href="https://www.magalimendy.fr/les-document-et-exemplaire">ICI</a>
+    </p>
     <br>
     <div class="row">
     <div class="col">
