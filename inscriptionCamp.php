@@ -258,6 +258,7 @@ function inscriptionCamp($id_cpt)
 
         $conn = null;
         //PDO connection to the DB to insert the participants' information
+        //check if there is more space for participants to register
         if ($numMax > $nombreInscrits) {
             $sqlInsert = "INSERT INTO mm_stagiaire (
             date_inscription,
@@ -380,7 +381,7 @@ function inscriptionCamp($id_cpt)
         <div class="row">
         <div class="col">
         <label for="adresse_stagiaire">Votre adresse *</label>
-         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '" placholder ="15 Rue st. Vincent 4800 Nantes" >
+         <input type="text" name="adresse_stagiaire" id="nom_stagiaire" class="form-control" required="required" value="' . $adresseStagiaire . '" placeholder ="15 Rue st. Vincent 4800 Nantes" >
         </div>
         </div>
         <br>
