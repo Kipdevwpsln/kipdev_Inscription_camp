@@ -31,13 +31,15 @@ function inscriptionCamp($id_cpt)
         $adresseStagiaire = $_POST['adresse_stagiaire'];
         $dateNaissance = $_POST['date_naissance'];
         $emailResponsablelegal = $_POST['mail_stagiaire'];
-        $tailles_vetement = $_POST['tailles_selectioner'];
+        $tailles_haut = $_POST['tailles_haut'];
         $sexStagiaire = $_POST['sex_stagiaire'];
         $idCamp = $_POST['camp_selectioner'];
         $demande = $_POST['demande'];
         $mailStagiaire = $_POST['mail_stagiaire'];
         $telStagiaire = $_POST['tel_stagiaire'];
         $lien_photo_passport ="";
+        $tailles_bas = $_POST['tailles_bas'];
+
         //today
 
         $today = date('Y-m-d');
@@ -86,7 +88,6 @@ function inscriptionCamp($id_cpt)
             $urlCertmedeffbb ="";
             $urlficheSanitaire ="";
             $urlJustificatifmutuelle ="";
-            $urlJustificationqf ="";
             $urlSecuriteSocial ="";
 
             $docCertMedLicence = $_FILES['cert_mede_ffbb'];
@@ -270,14 +271,14 @@ function inscriptionCamp($id_cpt)
             adresse_stagiaire,
             date_naissance,
             lien_cert_med_licence_ffbb,
-            lien_justification_qf,
             lien_consentement_photo,
             lien_securite_social,
             lien_mutuelle,
             lien_fiche_sanitaire,
             demande,
             lien_photo_passport,
-            tailles_vetement)
+            tailles_haut,
+            tailles_bas)
              value(
                :date_inscription,
                :id_camp,
@@ -290,14 +291,14 @@ function inscriptionCamp($id_cpt)
                :adresse_stagiaire,
                :date_naissance,
                :lien_cert_med_licence_ffbb,
-               :lien_justification_qf,
                :lien_consentement_photo,
                :lien_securite_social,
                :lien_mutuelle,
                :lien_fiche_sanitaire,
                :demande,
                :lien_photo_passport,
-               :tailles_vetement
+               :tailles_haut,
+               :tailles_bas
                )";
             try {
                 $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
@@ -315,14 +316,14 @@ function inscriptionCamp($id_cpt)
                 $smt->bindValue(":adresse_stagiaire",$adresseStagiaire, PDO::PARAM_STR);
                 $smt->bindValue(":date_naissance", $dateNaissance);
                 $smt->bindValue(":lien_cert_med_licence_ffbb", $urlCertmedeffbb, PDO::PARAM_STR);
-                $smt->bindValue(":lien_justification_qf", $urlJustificationqf, PDO::PARAM_STR);
                 $smt->bindValue(":lien_consentement_photo",$urlAutorisationPhoto, PDO::PARAM_STR);
                 $smt->bindValue(":lien_securite_social", $urlSecuriteSocial, PDO::PARAM_STR);
                 $smt->bindValue(":lien_mutuelle", $urlJustificatifmutuelle, PDO::PARAM_STR);
                 $smt->bindValue(":lien_fiche_sanitaire", $urlficheSanitaire, PDO::PARAM_STR);
                 $smt->bindValue(":demande", $demande, PDO::PARAM_STR);
                 $smt->bindValue(":lien_photo_passport", $lien_photo_passport, PDO::PARAM_STR);
-                $smt->bindValue(":tailles_vetement", $tailles_vetement, PDO::PARAM_STR);
+                $smt->bindValue(":tailles_haut", $tailles_haut, PDO::PARAM_STR);
+                $smt->bindValue(":tailles_bas", $tailles_bas, PDO::PARAM_STR);
                 
                 $smt->execute();
 
