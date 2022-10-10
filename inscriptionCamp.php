@@ -328,6 +328,18 @@ function inscriptionCamp($id_cpt)
                 
                 $smt->execute();
 
+                //update mm-camp
+                $updateCamp = "UPDATE mm-camp 
+                SET 'nombre_inscrits'= :nombre_inscrits
+                WHERE 'id_camp' = :id_camp";
+                $nombreInscrits = $nombreInscrits + 1;
+
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $smt = $conn->prepare($updateCamp);
+                $smt->execute(":id_camp", $idCamp );
+
+                header("Location: https://www.magalimendy.fr/welcome");
+
             } catch (PDOException $e) {
                 echo "insertion to the tabel mm_stagiaire failed '.$e.';";
             }
@@ -335,6 +347,7 @@ function inscriptionCamp($id_cpt)
             //complete
             echo "there is slots available for this camp";
         }
+        $conn = null;
         //update the number of subscriber
     
 
