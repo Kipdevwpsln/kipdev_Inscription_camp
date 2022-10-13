@@ -367,12 +367,7 @@ function inscriptionCamp($id_cpt)
     $content_inscription = '
 
     <style>
-    p{
-        color: white;
-    }
-    form label{
-        color: #fff;
-      }
+  
     </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
         <div class="container">
@@ -420,12 +415,12 @@ function inscriptionCamp($id_cpt)
         <br>
         <div class="row">
         <div class="col">
-        <label for="date_naissance" class ="text-light">Date de naissance *</label>
+        <label for="date_naissance" >Date de naissance *</label>
         <input type="date" name="date_naissance" class="form-control" required="required" value=" ' . $dateNaissance . '">
         </div>
         <div class="col">
-        <label for="camp_selectionne" class ="text-light" >Sélectionnez votre camp *</label>
-        <select class="form-select" aria-label="Camp" name="camp_selectioner" class ="text-light" required="required">
+        <label for="camp_selectionne" >Sélectionnez votre camp *</label>
+        <select class="form-select" aria-label="Camp" name="camp_selectioner" required="required">
         <option selected value="' . $idCamp . '" >' . $nomCamp . '</option>';
 
     //seelect all the camps partcipants can register
@@ -456,23 +451,25 @@ function inscriptionCamp($id_cpt)
         <h4>Tailles de vêtements</h4> 
         <div class="row">
         <div class="col">
-        <label for="tailles_haut" class ="text-light" >tailles de haut  *</label>
+        <label for="tailles_haut" >tailles de haut  *</label>
         <select class="form-select" name="tailles_haut" required="required" placeholder="xs">
             <option value="xs">xs</option>
             <option value="s">s</option>
             <option value="m">m</option>
             <option value="l">l</option>
         <option value="xl">xl</option>
+        <option value="xxl">xxl</option>
       </select>
       </div>
         <div class="col">
-        <label for="tailles_bas" class ="text-light" >tailles de bas  *</label>
+        <label for="tailles_bas"  >tailles de bas  *</label>
         <select class="form-select" name="tailles_bas" required="required" placeholder="xs">
         <option value="xs">xs</option>
         <option value="s">s</option>
         <option value="m">m</option>
         <option value="l">l</option>
         <option value="xl">xl</option>
+        <option value="xxl">xxl</option>
       </select>
         </div>
         </div>
@@ -489,33 +486,33 @@ function inscriptionCamp($id_cpt)
     <br>
     <div class="row">
     <div class="col">
-    <label for="cert_mede_ffbb" class ="text-light" >Certificat medical ou Licence FBB *</label>
+    <label for="cert_mede_ffbb"  >Certificat medical ou Licence FBB *</label>
     <input type="file" name="cert_mede_ffbb" class="form-control" accept=".pdf" required="required">
     </div>
     <div class="col">
-    <label for="autorisation_photo" class ="text-light" >Consentement à la publication de pohto *</label>
+    <label for="autorisation_photo"  >Consentement à la publication de pohto *</label>
     <input type="file" name="autorisation_photo" class="form-control" accept=".pdf" required="required">
     </div>
     </div>
     <br>
     <div class="row">
     <div class="col">
-    <label for="securite_social" class ="text-light">Attestation de sécurité sociale *</label>
+    <label for="securite_social" >Attestation de sécurité sociale *</label>
     <input type="file" name="securite_social" class="form-control" accept=".pdf" required="required">
     </div>
     <div class="col">
-    <label for="mutuelle" class ="text-light">Justificatif de mutuelle </label>
+    <label for="mutuelle" >Justificatif de mutuelle </label>
     <input type="file" name=" mutuelle" class="form-control" accept=".pdf">
     </div>
     <div class="col">
-    <label for="fiche_sanitaire" class ="text-light">Fiche sanitaire *</label>
+    <label for="fiche_sanitaire" >Fiche sanitaire *</label>
     <input type="file" name="fiche_sanitaire" class="form-control" accept=".pdf" required="required">
     </div>
     </div>
     <br>
     <div class="row">
     <div class="col">
-    <label for="demande" class ="text-light">message *</label>
+    <label for="demande" >message *</label>
     <textarea class="form-control" name="demande" id="demande" rows="6">Votre demande personnelle</textarea>
     </div>
     <div class="col">
@@ -524,25 +521,25 @@ function inscriptionCamp($id_cpt)
         <p> compléter cette partie saulment si vous êtes minore</p>
         <div class="row">
         <div class="col">
-        <label for="nom_responsable_legal" class ="text-light">Nom </label>
+        <label for="nom_responsable_legal" >Nom </label>
         <input type="text" name="nom_responsable_legal" class="form-control" value=" ' . $nomStagiaire . '">
         </div>
         <div class="col">
-        <label for="prenom_responsable_legal" class ="text-light">prénom </label>
+        <label for="prenom_responsable_legal" prénom </label>
         <input type="text" name="prenom_responsable_legal" class="form-control" value=" ' . $prenomResponsablelegal . '">
         </div>
         </div>
         <div class="row">
         <div class="col">
-        <label for="nom_responsable_legal" class ="text-light" >Numéro tel</label>
+        <label for="nom_responsable_legal" >Numéro tel</label>
         <input type="text" name="tel_responsable_legal" class="form-control" value=" ' . $nomResponsablelegal . '">
         </div>
         <div class="col">
-        <label for="email_responsable_legal" class ="text-light" >E-mail </label>
+        <label for="email_responsable_legal" >E-mail </label>
         <input type="email" name="email_responsable_legal" class="form-control" value=" ' . $emailResponsablelegal . '">
         </div>
         </div>
-        <label for="adresse_responsable_legal" class ="text-light" >Adresse </label>
+        <label for="adresse_responsable_legal" >Adresse </label>
         <input type="text" name="adresse_responsable_legal" class="form-control" value=" ' . $adresseResponsablelegal . '">
 
         </div>
